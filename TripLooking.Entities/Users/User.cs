@@ -9,13 +9,21 @@ namespace StudentSatisfaction.Entities.Users
 {
     public sealed class User:Entity
     {
-        public User(string type, Guid personalDataId):base()
+        public User(string type, Guid personalDataId,Guid logInId):base()
         {
             Type = type;
-            Id_Date_Personale = personalDataId;
+            PersonalDataId = personalDataId;
+            logInId = logInId;
+            //PersonalData= new PeersonalDetails();
         }
 
-        public string Type { get; set; }
-        public Guid Id_Date_Personale { get; set; }
+        public string Type { get; private set; }
+        public Guid PersonalDataId { get;private set; }
+
+        public Guid LogInId { get; private set; }
+
+        //public PeersonalDetails PersonalData { get; private set; }
+
+        
     }
 }
