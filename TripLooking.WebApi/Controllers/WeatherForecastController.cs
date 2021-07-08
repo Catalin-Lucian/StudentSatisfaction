@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TripLooking.WebApi.Controllers
+namespace StudentSatisfaction.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,6 +1,6 @@
 using System;
 
-namespace TripLooking.WebApi
+namespace StudentSatisfaction.WebApi
 {
     public class WeatherForecast
     {
