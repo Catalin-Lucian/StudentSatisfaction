@@ -306,5 +306,43 @@ namespace StudentSatisfaction.Persistence.Migrations
             );
 
         }
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Comment");
+
+            migrationBuilder.DropTable(
+                name: "Question");
+
+            migrationBuilder.DropTable(
+                name: "Rating");
+
+            migrationBuilder.DropTable(
+                name: "SubmittedQuestion");
+
+            migrationBuilder.DropTable(
+                name: "Survey");
+
+            migrationBuilder.DropTable(
+                name: "SurveysTopics");
+
+            migrationBuilder.DropTable(
+                name: "Topic");
+
+            migrationBuilder.DropTable(
+                name: "UserSurvey");
+
+            migrationBuilder.DropTable(
+                name: "FacultyDetails");
+
+            migrationBuilder.DropTable(
+                name: "Login");
+
+            migrationBuilder.DropTable(
+                name: "PersonalDetails");
+
+            migrationBuilder.DropTable(
+                name: "User");
+        }
     }
 }

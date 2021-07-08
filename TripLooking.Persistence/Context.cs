@@ -10,5 +10,6 @@ namespace StudentSatisfaction.Persistence
             Database.Migrate();
         }
 
+        /*public DbSet<StudentSatisfaction> Trips { get; set; }*/
     }
 }
