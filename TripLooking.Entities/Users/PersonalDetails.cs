@@ -2,9 +2,9 @@
 
 namespace StudentSatisfaction.Entities.Users
 {
-    public sealed class PeersonalDetails:Entity
+    public sealed class PersonalDetails:Entity
     {
-        public PeersonalDetails(string firstName,string lastName,int age,DateTime birthDate,string email,string phone,Guid facultyDetailsId):base()
+        public PersonalDetails(string firstName,string lastName,int age,DateTime birthDate,string email,string phone,Guid facultyDetailsId):base()
         {
             FirstName = firstName;
             LastName = lastName;

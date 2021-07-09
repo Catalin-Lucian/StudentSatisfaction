@@ -17,6 +17,9 @@ namespace StudentSatisfaction.Entities.Users
             LogInId = logInId;
             UserSurveys = new List<UserSurvey>();    //new
             //PersonalData= new PeersonalDetails();
+            SubmittedQuestions = new List<SubmittedQuestion>();  //new
+            Ratings = new List<Rating>();           //new
+            Comments = new List<Comment>();        //new
         }
 
         public string Type { get; private set; }
@@ -26,5 +29,11 @@ namespace StudentSatisfaction.Entities.Users
 
         //new
         public ICollection<UserSurvey> UserSurveys { get; private set; }
+        //new
+        public ICollection<SubmittedQuestion> SubmittedQuestions { get; private set; }
+        //new
+        public ICollection<Rating> Ratings { get; private set; }
+        //new
+        public ICollection<Comment> Comments { get; private set; }
     }
 }

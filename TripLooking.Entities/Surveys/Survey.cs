@@ -19,6 +19,8 @@ namespace StudentSatisfaction.Entities.Surveys
             SubmittedQuestions = new List<SubmittedQuestion>();
             //new
             UserSurveys = new List<UserSurvey>();
+            //new
+            SurveysTopics = new List<SurveysTopics>();
         }
 
         public string Name { get; private set; }
@@ -30,7 +32,10 @@ namespace StudentSatisfaction.Entities.Surveys
         public ICollection<Comment> Comments { get; private set; }
 
         //new
-        public ICollection<UserSurvey> UserSurveys { get; private set; }        
+        public ICollection<UserSurvey> UserSurveys { get; private set; }
+
+        //new
+        public ICollection<SurveysTopics> SurveysTopics { get; private set; }
     }
 
   

@@ -1,4 +1,6 @@
-﻿namespace StudentSatisfaction.Entities.Surveys
+﻿using System.Collections.Generic;
+
+namespace StudentSatisfaction.Entities.Surveys
 {
     public sealed class Topic:Entity
     {
@@ -6,10 +8,13 @@
         {
             Title = title;
             Details = details;
+            //new
+            SurveysTopics = new List<SurveysTopics>();
         }
 
         public string Title { get; private set; }
         public string Details { get; private set; }
-
+        //new
+        public ICollection<SurveysTopics> SurveysTopics { get; private set; }
     }
 }

@@ -15,7 +15,5 @@ namespace StudentSatisfaction.Entities.Surveys
         public Guid UserId { get; private set; }
         public string TextQuestion { get; private set; }
 
-        
-
     }
 }
