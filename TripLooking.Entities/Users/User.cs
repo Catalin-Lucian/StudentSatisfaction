@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StudentSatisfaction.Entities;
+using StudentSatisfaction.Entities.Surveys;
 
 namespace StudentSatisfaction.Entities.Users
 {
@@ -13,7 +14,8 @@ namespace StudentSatisfaction.Entities.Users
         {
             Type = type;
             PersonalDataId = personalDataId;
-            logInId = logInId;
+            LogInId = logInId;
+            UserSurveys = new List<UserSurvey>();    //new
             //PersonalData= new PeersonalDetails();
         }
 
@@ -22,8 +24,7 @@ namespace StudentSatisfaction.Entities.Users
 
         public Guid LogInId { get; private set; }
 
-        //public PeersonalDetails PersonalData { get; private set; }
-
-        
+        //new
+        public ICollection<UserSurvey> UserSurveys { get; private set; }
     }
 }

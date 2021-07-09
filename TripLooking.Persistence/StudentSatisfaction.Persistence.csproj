@@ -13,4 +13,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappings\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TripLooking.Entities\StudentSatisfaction.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace StudentSatisfaction.Entities.Survey
+﻿namespace StudentSatisfaction.Entities.Surveys
 {
     public sealed class Topic:Entity
     {

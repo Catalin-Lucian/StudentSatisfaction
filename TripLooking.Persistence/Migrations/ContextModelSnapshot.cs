@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace StudentSatisfaction.Persistence.Migrations
 {
-    [DbContext(typeof(Context))]
+    [DbContext(typeof(StudentContext))]
     partial class ContextModelSnapshot:ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

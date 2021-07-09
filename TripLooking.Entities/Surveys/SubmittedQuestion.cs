@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StudentSatisfaction.Entities.Survey
+namespace StudentSatisfaction.Entities.Surveys
 {
     public sealed class SubmittedQuestion:Entity
     {

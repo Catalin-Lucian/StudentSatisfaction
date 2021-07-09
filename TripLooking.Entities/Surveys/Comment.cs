@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace StudentSatisfaction.Entities.Survey
+namespace StudentSatisfaction.Entities.Surveys
 {
     public sealed class Comment:Entity
     {
-        public Comment(string textComment,Guid userId,Guid surveyId):base()
+        public Comment(string textComment, Guid userId, Guid surveyId):base()
         {
             TextComment = textComment;
             UserId = userId;

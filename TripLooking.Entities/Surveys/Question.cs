@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using StudentSatisfaction.Entities.Surveys;
 
-namespace StudentSatisfaction.Entities.Survey
+namespace StudentSatisfaction.Entities.Surveys
 {
     public sealed class Question:Entity
     {
-        public Question(string textQuestion,Guid surveyId):base()
+        public Question(string textQuestion, Guid surveyId):base()
         {
             TextQuestion = textQuestion;
             SurveyId = surveyId;
