@@ -22,6 +22,7 @@ namespace StudentSatisfaction.Entities.Users
             Ratings = new List<Rating>();
             Comments = new List<Comment>();
             Notifications = new List<Notification>();
+            Surveys = new List<Survey>();
             //UserSurveys = new List<UserSurvey>();
         }
 
@@ -37,7 +38,7 @@ namespace StudentSatisfaction.Entities.Users
         public ICollection<Rating> Ratings { get; private set; }
         public ICollection<Comment> Comments { get; private set; }
         public ICollection<Notification> Notifications { get; private set; }
+        public ICollection<Survey> Surveys { get; private set; }
         //public ICollection<UserSurvey> UserSurveys { get; private set; }
-
     }
 }

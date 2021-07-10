@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentSatisfaction.Entities.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace StudentSatisfaction.Entities.Surveys
             SubmittedQuestions = new List<SubmittedQuestion>();
             Comments = new List<Comment>();
             Topics = new List<Topic>();
+            Users = new List<User>();
             //UserSurveys
             //SurveyToics
         }
@@ -28,6 +30,7 @@ namespace StudentSatisfaction.Entities.Surveys
         public ICollection<SubmittedQuestion> SubmittedQuestions { get; private set; }
         public ICollection<Comment> Comments { get; private set; }
         public ICollection<Topic> Topics { get; private set; }
+        public ICollection<User> Users { get; private set; }
         //UserSurveys
         //SurveyToics
     }
