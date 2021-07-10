@@ -33,10 +33,10 @@ namespace StudentSatisfaction.Persistence.Mappings
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
-                .HasMany<Survey>(u => u.Surveys)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<User>()
+            //    .HasMany<Survey>(u => u.Surveys)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
                 .HasMany<Notification>(u => u.Notifications)

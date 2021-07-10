@@ -16,11 +16,6 @@ namespace StudentSatisfaction.Persistence.Mappings
                 .Property(q => q.Id)
                 .HasColumnName("id")
                 .IsRequired();
-
-            modelBuilder.Entity<Topic>()
-                .HasMany<Survey>(t => t.Surveys)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

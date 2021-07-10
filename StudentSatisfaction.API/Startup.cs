@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentSatisfaction.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace StudentSatisfaction.API
 {
@@ -26,8 +29,16 @@ namespace StudentSatisfaction.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            services.AddControllers()
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-            services.AddControllers();
+            services.AddDbContext<SurveysContext>(config =>
+            {
+                config.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection"));
+            });
+
+            //services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentSatisfaction.API", Version = "v1" });
