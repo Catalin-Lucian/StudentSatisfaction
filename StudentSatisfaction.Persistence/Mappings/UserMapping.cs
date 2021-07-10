@@ -33,6 +33,8 @@ namespace StudentSatisfaction.Persistence.Mappings
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //exista intr-o singura parte!
+
             //modelBuilder.Entity<User>()
             //    .HasMany<Survey>(u => u.Surveys)
             //    .WithOne()
