@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripLooking.WebApi", "TripLooking.WebApi\TripLooking.WebApi.csproj", "{384C00E6-F1AF-4273-B2ED-F99B815BB0E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripLooking.WebApi", "TripLooking.WebApi\TripLooking.WebApi.csproj", "{384C00E6-F1AF-4273-B2ED-F99B815BB0E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripLooking.Business", "TripLooking.Business\TripLooking.Business.csproj", "{7E82DE0E-8102-4E1F-BD70-638064B49FA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripLooking.Business", "TripLooking.Business\TripLooking.Business.csproj", "{7E82DE0E-8102-4E1F-BD70-638064B49FA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripLooking.Persistence", "TripLooking.Persistence\TripLooking.Persistence.csproj", "{1CF1F8CB-3C9A-45F9-9AFA-DD3BDBBA9E53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripLooking.Persistence", "TripLooking.Persistence\TripLooking.Persistence.csproj", "{1CF1F8CB-3C9A-45F9-9AFA-DD3BDBBA9E53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

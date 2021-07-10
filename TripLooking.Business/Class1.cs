@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TripLooking.Business
+namespace StudentSatisfaction.Business
 {
     public class Class1
     {
