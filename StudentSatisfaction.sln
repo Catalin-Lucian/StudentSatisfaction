@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentSatisfaction.API", "StudentSatisfaction.API\StudentSatisfaction.API.csproj", "{5EDEB8AA-BE4B-4D14-A6D8-5E77674DADE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentSatisfaction.API", "StudentSatisfaction.API\StudentSatisfaction.API.csproj", "{5EDEB8AA-BE4B-4D14-A6D8-5E77674DADE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Presentation", "01.Presentation", "{0C3BBF45-2056-48BF-BB71-E945ECE94D54}"
 EndProject
@@ -11,9 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Business", "02.Business"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Persistence", "03.Persistence", "{BE3303AF-B577-4027-BCEF-B75D1B944469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentSatisfaction.Entities", "StudentSatisfaction.Entities\StudentSatisfaction.Entities.csproj", "{4056F54E-0320-4532-A8D5-3F8A8F97ED9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentSatisfaction.Entities", "StudentSatisfaction.Entities\StudentSatisfaction.Entities.csproj", "{4056F54E-0320-4532-A8D5-3F8A8F97ED9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentSatisfaction.Persistence", "StudentSatisfaction.Persistence\StudentSatisfaction.Persistence.csproj", "{A8008583-8974-4382-BA8A-F6ED07D88479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentSatisfaction.Persistence", "StudentSatisfaction.Persistence\StudentSatisfaction.Persistence.csproj", "{A8008583-8974-4382-BA8A-F6ED07D88479}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Surveys", "Surveys", "{B1055FDE-3BD2-454E-8D1A-DE63428BB591}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{95A49BA6-E1F6-444F-80CA-5CB082914572}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,8 @@ Global
 		{5EDEB8AA-BE4B-4D14-A6D8-5E77674DADE6} = {0C3BBF45-2056-48BF-BB71-E945ECE94D54}
 		{4056F54E-0320-4532-A8D5-3F8A8F97ED9E} = {BE3303AF-B577-4027-BCEF-B75D1B944469}
 		{A8008583-8974-4382-BA8A-F6ED07D88479} = {BE3303AF-B577-4027-BCEF-B75D1B944469}
+		{B1055FDE-3BD2-454E-8D1A-DE63428BB591} = {8A9D55F7-0EB8-4F07-A7EF-602725C340E6}
+		{95A49BA6-E1F6-444F-80CA-5CB082914572} = {B1055FDE-3BD2-454E-8D1A-DE63428BB591}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24A40200-CD04-4151-AE9F-BED07C8A2036}
