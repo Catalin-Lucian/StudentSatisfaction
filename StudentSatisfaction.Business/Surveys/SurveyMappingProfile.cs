@@ -25,6 +25,9 @@ namespace StudentSatisfaction.Business.Surveys
             CreateMap<Question, QuestionModel>();
             CreateMap<CreateQuestionModel, Question>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<Survey, UpdateSurveyModel>();
+            CreateMap<UpdateSurveyModel, Survey>();
         }
     }
 }

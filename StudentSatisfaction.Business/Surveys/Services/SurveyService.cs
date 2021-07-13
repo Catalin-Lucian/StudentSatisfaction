@@ -52,7 +52,7 @@ namespace StudentSatisfaction.Business.Surveys.Services
             await _surveyRepository.SaveChanges();
         }
 
-        public async Task Update(Guid surveyId, SurveyModel model)
+        public async Task Update(Guid surveyId, UpdateSurveyModel model)
         {
             var survey = await _surveyRepository.GetSurveyById(surveyId);
 

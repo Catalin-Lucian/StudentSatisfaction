@@ -61,7 +61,7 @@ namespace StudentSatisfaction.API.Controllers
 
         //primeste ca parametru SurveyModel pt. ca nu vrem sa se genereze un nou PK pt. Survey-ul pe care vrem sa il updatam
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] SurveyModel model)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateSurveyModel model)
         {
             await _surveyService.Update(id, model);
 
