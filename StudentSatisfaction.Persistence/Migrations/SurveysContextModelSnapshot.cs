@@ -47,23 +47,22 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.Question", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("question_text");
+                        .HasColumnName("QuestionText");
 
                     b.Property<Guid>("SurveyId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("survey_id");
+                        .HasColumnName("SurveyId");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("tip");
+                        .HasColumnName("Type");
 
                     b.HasKey("Id");
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//Context --- nu genera Guid la Add!!!!  --> NeverGenerated()
 
 namespace StudentSatisfaction.API.Controllers
 {
@@ -52,16 +53,18 @@ namespace StudentSatisfaction.API.Controllers
             return Created(question.Id.ToString(), null);
         }
 
-        //// PUT api/<QuestionsController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
+        //[HttpPut("{questionId}")]
+        //public async Task<IActionResult> Put([FromRoute]Guid surveyId, [FromRoute] Guid questionId)
         //{
+            
         //}
 
-        //// DELETE api/<QuestionsController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("{questionId}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid surveyId, [FromRoute] Guid questionId)
+        {
+            await _questionService.Delete(surveyId, questionId);
+
+            return NoContent();
+        }
     }
 }

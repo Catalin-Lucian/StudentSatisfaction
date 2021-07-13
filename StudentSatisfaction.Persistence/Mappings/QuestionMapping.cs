@@ -15,7 +15,8 @@ namespace StudentSatisfaction.Persistence.Mappings
             modelBuilder.Entity<Question>()
                 .Property(q => q.Id)
                 .HasColumnName("Id")
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedNever();
 
             modelBuilder.Entity<Question>()
                 .Property(q => q.QuestionText)
