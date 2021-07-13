@@ -11,7 +11,7 @@ namespace StudentSatisfaction.Business.Surveys.Services
     {
         IEnumerable<SurveyModel> GetAll();
         Task<SurveyModel> GetById(Guid surveyId);
-        Task<SurveyModel> Create(SurveyModel model);
+        Task<SurveyModel> Create(CreateSurveyModel model);
         Task Delete(Guid surveyId);
         Task Update(Guid surveyId, SurveyModel model);
     }

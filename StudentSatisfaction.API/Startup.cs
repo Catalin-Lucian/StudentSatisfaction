@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentSatisfaction.Business.Surveys.Services;
 using StudentSatisfaction.Business.Surveys.Services.Comments;
 using StudentSatisfaction.Business.Surveys.Services.Questions;
+using StudentSatisfaction.Business.Surveys;
 
 namespace StudentSatisfaction.API
 {
@@ -41,11 +42,16 @@ namespace StudentSatisfaction.API
                 config.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection"));
             });
 
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile<SurveyMappingProfile>();
+            });
             //services.AddControllers();
             services.AddSwaggerGen();
 
             services
-                .AddScoped<ISurveyRepository, SurveyRepository>();
+                .AddScoped<ISurveyRepository, SurveyRepository>()
+                .AddScoped<ISurveyService, SurveyService>();
             //    .AddScoped<ISurveyService, SurveyService>()
             //    .AddScoped<ICommentsService, CommentsService>()
             //    .AddScoped<IQuestionService, QuestionService>();

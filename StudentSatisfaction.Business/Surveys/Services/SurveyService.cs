@@ -35,7 +35,7 @@ namespace StudentSatisfaction.Business.Surveys.Services
             return _mapper.Map<SurveyModel>(survey);
         }
 
-        public async Task<SurveyModel> Create(SurveyModel model)
+        public async Task<SurveyModel> Create(CreateSurveyModel model)
         {
             var survey = _mapper.Map<Survey>(model);
             await _surveyRepository.Create(survey);

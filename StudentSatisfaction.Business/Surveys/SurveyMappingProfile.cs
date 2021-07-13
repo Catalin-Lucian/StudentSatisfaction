@@ -15,10 +15,11 @@ namespace StudentSatisfaction.Business.Surveys
         public SurveyMappingProfile()
         {
             CreateMap<Survey, SurveyModel>();
-            CreateMap<SurveyModel, Survey>(); /////
+            CreateMap<SurveyModel, Survey>(); 
 
-            //CreateMap<CreateCommentModel, Comment>()
-            //    .ForMember(dest => dest.)
+            //genereaza automat un Guid pt. noul Survey
+            CreateMap<CreateSurveyModel, Survey>()
+                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }
