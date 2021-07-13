@@ -51,7 +51,8 @@ namespace StudentSatisfaction.API
 
             services
                 .AddScoped<ISurveyRepository, SurveyRepository>()
-                .AddScoped<ISurveyService, SurveyService>();
+                .AddScoped<ISurveyService, SurveyService>()
+                .AddScoped<IQuestionService, QuestionService>();
             //    .AddScoped<ISurveyService, SurveyService>()
             //    .AddScoped<ICommentsService, CommentsService>()
             //    .AddScoped<IQuestionService, QuestionService>();

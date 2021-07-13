@@ -12,7 +12,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Questions
         Task<QuestionModel> Add(Guid surveyId, CreateQuestionModel model);
 
         Task<IEnumerable<QuestionModel>> Get(Guid surveyId);
-
+        Task<QuestionModel> GetById(Guid surveyId, Guid questionId);
         Task Delete(Guid surveyId, Guid questionId);
     }
 }

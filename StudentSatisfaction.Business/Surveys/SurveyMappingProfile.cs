@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
+using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Entities.Surveys;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,10 @@ namespace StudentSatisfaction.Business.Surveys
             //genereaza automat un Guid pt. noul Survey
             CreateMap<CreateSurveyModel, Survey>()
                  .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<Question, QuestionModel>();
+            CreateMap<CreateQuestionModel, Question>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }

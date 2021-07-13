@@ -8,7 +8,6 @@ namespace StudentSatisfaction.Business.Surveys.Models.Comments
 {
     public sealed class CommentModel
     {
-        public Guid Id { get; set; }
         public string CommentText { get; set; }
     }
 }

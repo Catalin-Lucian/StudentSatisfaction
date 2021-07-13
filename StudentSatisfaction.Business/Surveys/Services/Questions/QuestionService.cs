@@ -55,5 +55,13 @@ namespace StudentSatisfaction.Business.Surveys.Services.Questions
             _surveyRepository.Update(survey);
             await _surveyRepository.SaveChanges();
         }
+
+        public async Task<QuestionModel> GetById(Guid surveyId, Guid questionId)
+        {
+            var survey = await _surveyRepository.GetSurveyById(surveyId);
+            var question = survey.Questions.FirstOrDefault(c => c.Id == questionId);
+
+            return _mapper.Map<QuestionModel>(question);
+        }
     }
 }

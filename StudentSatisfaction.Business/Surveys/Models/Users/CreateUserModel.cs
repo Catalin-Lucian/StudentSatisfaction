@@ -8,7 +8,6 @@ namespace StudentSatisfaction.Business.Surveys.Models.Users
 {
     public sealed class CreateUserModel
     {
-        public Guid Id { get; set; }
         public string Type { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

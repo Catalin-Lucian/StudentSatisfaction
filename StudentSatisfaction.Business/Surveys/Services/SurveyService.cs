@@ -54,11 +54,11 @@ namespace StudentSatisfaction.Business.Surveys.Services
 
         public async Task Update(Guid surveyId, SurveyModel model)
         {
-            var trip = await _surveyRepository.GetSurveyById(surveyId);
+            var survey = await _surveyRepository.GetSurveyById(surveyId);
 
-            _mapper.Map(model, trip);
+            _mapper.Map(model, survey);
 
-            _surveyRepository.Update(trip);
+            _surveyRepository.Update(survey);
             await _surveyRepository.SaveChanges();
         }
     }

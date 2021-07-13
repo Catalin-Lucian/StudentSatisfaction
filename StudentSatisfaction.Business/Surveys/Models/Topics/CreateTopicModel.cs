@@ -8,7 +8,6 @@ namespace StudentSatisfaction.Business.Surveys.Models.Topics
 {
     public sealed class CreateTopicModel
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
     }

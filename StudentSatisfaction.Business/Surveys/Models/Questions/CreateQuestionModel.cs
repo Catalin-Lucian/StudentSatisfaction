@@ -8,7 +8,6 @@ namespace StudentSatisfaction.Business.Surveys.Models.Questions
 {
     public sealed class CreateQuestionModel
     {
-        public Guid Id { get; set; }
         public Guid SurveyId { get; set; }
         public string QuestionText { get; set; }
         public string Type { get; set; }
