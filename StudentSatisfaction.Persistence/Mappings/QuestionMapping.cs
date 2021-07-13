@@ -14,22 +14,22 @@ namespace StudentSatisfaction.Persistence.Mappings
         {
             modelBuilder.Entity<Question>()
                 .Property(q => q.Id)
-                .HasColumnName("id")
+                .HasColumnName("Id")
                 .IsRequired();
 
             modelBuilder.Entity<Question>()
                 .Property(q => q.QuestionText)
-                .HasColumnName("question_text")
+                .HasColumnName("QuestionText")
                 .IsRequired();
 
             modelBuilder.Entity<Question>()
                 .Property(q => q.Type)
-                .HasColumnName("tip")
+                .HasColumnName("Type")
                 .IsRequired();
 
             modelBuilder.Entity<Question>()
                 .Property(q => q.SurveyId)
-                .HasColumnName("survey_id")
+                .HasColumnName("SurveyId")
                 .IsRequired();
 
             modelBuilder.Entity<Question>()

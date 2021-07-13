@@ -45,7 +45,8 @@ namespace StudentSatisfaction.Persistence
                 .Include(x => x.SubmittedQuestions)
                 .Include(x => x.Comments)
                 .Include(x => x.Users)
-                .FirstAsync(i => i.Id == id); 
+                .FirstAsync(i => i.Id == id);
+            //return await _context.Surveys.FindAsync(id);
         }
 
         public async Task SaveChanges()
