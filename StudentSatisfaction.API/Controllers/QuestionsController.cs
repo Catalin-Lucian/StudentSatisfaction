@@ -22,6 +22,7 @@ namespace StudentSatisfaction.API.Controllers
             _questionService = questionService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Get([FromRoute] Guid surveyId)
         {
@@ -50,14 +51,21 @@ namespace StudentSatisfaction.API.Controllers
         {
             var question = await _questionService.Add(surveyId, model);
 
+            if(question == null)
+            {
+                return BadRequest();
+            }
+
             return Created(question.Id.ToString(), null);
         }
 
-        //[HttpPut("{questionId}")]
-        //public async Task<IActionResult> Put([FromRoute]Guid surveyId, [FromRoute] Guid questionId)
-        //{
-            
-        //}
+        [HttpPut("{questionId}")]
+        public async Task<IActionResult> Put([FromRoute] Guid surveyId, [FromRoute] Guid questionId, [FromBody] UpdateQuestionModel model)
+        {
+            await _questionService.Update(surveyId, questionId, model);
+
+            return NoContent();
+        }
 
         [HttpDelete("{questionId}")]
         public async Task<IActionResult> Delete([FromRoute] Guid surveyId, [FromRoute] Guid questionId)

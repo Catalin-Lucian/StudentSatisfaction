@@ -31,7 +31,8 @@ namespace StudentSatisfaction.Persistence.Mappings
             modelBuilder.Entity<Question>()
                 .Property(q => q.SurveyId)
                 .HasColumnName("SurveyId")
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedNever();
 
             modelBuilder.Entity<Question>()
                 .HasMany<Rating>(q => q.Ratings)

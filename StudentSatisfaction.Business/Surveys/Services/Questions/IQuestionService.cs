@@ -14,5 +14,6 @@ namespace StudentSatisfaction.Business.Surveys.Services.Questions
         Task<IEnumerable<QuestionModel>> Get(Guid surveyId);
         Task<QuestionModel> GetById(Guid surveyId, Guid questionId);
         Task Delete(Guid surveyId, Guid questionId);
+        Task Update(Guid surveyId, Guid questionId, UpdateQuestionModel model);
     }
 }
