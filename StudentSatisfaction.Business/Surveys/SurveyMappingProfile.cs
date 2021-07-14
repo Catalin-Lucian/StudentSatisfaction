@@ -2,6 +2,7 @@
 using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
+using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Entities.Surveys;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace StudentSatisfaction.Business.Surveys
 
             CreateMap<Question, UpdateQuestionModel>();
             CreateMap<UpdateQuestionModel, Question>();
+
+            CreateMap<Topic, TopicModel>();
+            CreateMap<TopicModel, Topic>();
         }
     }
 }
