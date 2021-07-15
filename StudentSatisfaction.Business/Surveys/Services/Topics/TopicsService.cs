@@ -16,6 +16,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
         private readonly ITopicRepository _topicRepository;
         private readonly IMapper _mapper;
 
+
         public TopicsService(ISurveyRepository surveyRepository, ITopicRepository topicRepository, IMapper mapper)
         {
             _surveyRepository = surveyRepository;
@@ -23,7 +24,20 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             _mapper = mapper;
         }
 
-        public async Task<TopicModel> CreateNewTopic(CreateTopicModel model)
+
+        public IEnumerable<TopicModel> GetAll()
+        {
+            return _mapper.Map<IEnumerable<TopicModel>>(_topicRepository.GetAll());
+        }
+
+        public async Task<TopicModel> GetById(Guid topicId)
+        {
+            var topic = await _topicRepository.GetTopicById(topicId);
+
+            return _mapper.Map<TopicModel>(topic);
+        }
+
+        public async Task<TopicModel> Create(CreateTopicModel model)
         {
             var topic = _mapper.Map<Topic>(model);
             await _topicRepository.Create(topic);
@@ -32,6 +46,24 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             return _mapper.Map<TopicModel>(topic);
         }
 
+        public async Task Delete(Guid topicId)
+        {
+            var topic = await _topicRepository.GetTopicById(topicId);
+
+            _topicRepository.Delete(topic);
+            await _topicRepository.SaveChanges();
+        }
+
+        public async Task Update(Guid topicId, UpdateTopicModel model)
+        {
+            var topic = await _topicRepository.GetTopicById(topicId);
+            _mapper.Map(model, topic);
+
+            _topicRepository.Update(topic);
+            await _topicRepository.SaveChanges();
+        }
+
+        //ADAUGARE DUPA TOPIC ID!!!!
         public async Task<TopicModel> AddTopicToSurvey(Guid surveyId, CreateTopicModel model)
         {
             //creez noul topic
@@ -41,7 +73,6 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
 
             var survey = await _surveyRepository.GetSurveyById(surveyId);
 
-            //var topic = _mapper.Map<Topic>(model);
             survey.Topics.Add(topic);
 
             _surveyRepository.Update(survey);
@@ -50,13 +81,19 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             return _mapper.Map<TopicModel>(topic);
         }
 
-        public async Task Delete(Guid surveyId, Guid topicId)
+        //public async Task<TopicModel> AddCertainTopicToSurvey(Guid surveyId, Guid topicId)
+        //{
+        //    var survey = await _surveyRepository.GetSurveyById(surveyId);
+        //    var topic = _topicRepository.GetTopicById(topicId);
+        //}
+
+        public async Task DeleteTopicFromSurvey(Guid surveyId, Guid topicId)
         {
             var survey = await _surveyRepository.GetSurveyById(surveyId);
             var topicToRemove = survey.Topics.FirstOrDefault(t => t.Id == topicId);
 
             if (topicToRemove != null)
-            {
+            { 
                 survey.Topics.Remove(topicToRemove);
             }
 
@@ -64,7 +101,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             await _surveyRepository.SaveChanges();
         }
 
-        public async Task<IEnumerable<TopicModel>> Get(Guid surveyId)
+        public async Task<IEnumerable<TopicModel>> GetAllTopicsFromSurvey(Guid surveyId)
         {
             var survey = await _surveyRepository.GetSurveyById(surveyId);
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StudentSatisfaction.API.Controllers
 {
-    [Route("api/survey/{surveyId}/topics")]
+    [Route("api/topics")]
     [ApiController]
     public class TopicsController : ControllerBase
     {
@@ -24,62 +24,47 @@ namespace StudentSatisfaction.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromRoute] Guid surveyId)
+        public IActionResult Get()
         {
-            var topics = await _topicsService.Get(surveyId);
+            var topics = _topicsService.GetAll();
 
             return Ok(topics);
         }
 
-        //// GET api/<TopicsController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //adaug un Topic nou
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] CreateTopicModel model)
-        //{
-        //    var topic = await _topicsService.CreateNewTopic(model);
-
-        //    if (topic == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    return Created(topic.Id.ToString(), null);
-        //}
-
-        //adaug un topic in Survey
-        [HttpPost]
-        public async Task<IActionResult> Post([FromRoute] Guid surveyId, [FromBody] CreateTopicModel model)
+        [HttpGet("{topicId}")]
+        public async Task<IActionResult> Get([FromRoute] Guid topicId)
         {
+            var topic = await _topicsService.GetById(topicId);
 
-            var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
-
-            if (topic == null)
+            if(topic == null)
             {
                 return BadRequest();
             }
 
+            return Ok(topic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateTopicModel model)
+        {
+            var topic = await _topicsService.Create(model);
+
             return Created(topic.Id.ToString(), null);
         }
 
-        //// PUT api/<TopicsController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
 
-
-        //delete a certain topic from a certain survey
-        // DELETE api/<TopicsController>/5
-        [HttpDelete("{topicId}")]
-        public async Task<IActionResult> DeleteFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
+        [HttpPut("{topicId}")]
+        public async Task<IActionResult> Put([FromRoute] Guid topicId, [FromBody] UpdateTopicModel model)
         {
-            await _topicsService.Delete(surveyId, topicId);
+            await _topicsService.Update(topicId, model);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid topicId)
+        {
+            await _topicsService.Delete(topicId);
 
             return NoContent();
         }

@@ -39,6 +39,8 @@ namespace StudentSatisfaction.Business.Surveys
 
             CreateMap<Topic, TopicModel>();
             CreateMap<TopicModel, Topic>();
+
+            CreateMap<UpdateTopicModel, Topic>();
             CreateMap<CreateTopicModel, Topic>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())); ;
 

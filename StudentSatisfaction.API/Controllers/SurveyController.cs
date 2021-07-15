@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models;
+using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Services;
+using StudentSatisfaction.Business.Surveys.Services.Topics;
 using StudentSatisfaction.Persistence;
 using System;
 using System.Threading.Tasks;
@@ -15,17 +17,19 @@ namespace StudentSatisfaction.API.Controllers
     public class SurveyController: ControllerBase
     {
         private readonly ISurveyService _surveyService;
+        private readonly ITopicsService _topicsService;
 
 
-        public SurveyController(ISurveyService surveyService)
+        public SurveyController(ISurveyService surveyService, ITopicsService topicsService)
         {
             _surveyService = surveyService;
+            _topicsService = topicsService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        [HttpGet("{surveyId}")]
+        public async Task<IActionResult> GetSurvey([FromRoute] Guid surveyId)
         {
-            var survey = await _surveyService.GetById(id);
+            var survey = await _surveyService.GetById(surveyId);
 
             if(survey == null)
             {
@@ -36,7 +40,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateSurveyModel model)
+        public async Task<IActionResult> CreateSurvey([FromBody] CreateSurveyModel model)
         {
             var result = await _surveyService.Create(model);
 
@@ -44,28 +48,76 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllSurveys()
         {
             var trips = _surveyService.GetAll();
 
             return Ok(trips);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        [HttpDelete("{suvreyId}")]
+        public async Task<IActionResult> DeleteSurvey([FromRoute] Guid surveyId)
         {
-            await _surveyService.Delete(id);
+            await _surveyService.Delete(surveyId);
 
             return NoContent();
         }
 
         //primeste ca parametru SurveyModel pt. ca nu vrem sa se genereze un nou PK pt. Survey-ul pe care vrem sa il updatam
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateSurveyModel model)
+        [HttpPut("{surveyId}")]
+        public async Task<IActionResult> UpdateSurvey([FromRoute] Guid surveyId, [FromBody] UpdateSurveyModel model)
         {
-            await _surveyService.Update(id, model);
+            await _surveyService.Update(surveyId, model);
 
             return NoContent();
         }
+
+        //Manage topics from survey
+
+        //delete a certain topic from a certain survey
+        [HttpDelete("{surveyId}/deleteCertain" +
+            "Topic/{topicId}")]
+        public async Task<IActionResult> DeleteTopicFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
+        {
+            await _topicsService.DeleteTopicFromSurvey(surveyId, topicId);
+
+            return NoContent();
+        }
+
+        [HttpPost("{surveyId}/addTopic")]
+        public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromBody] CreateTopicModel model)
+        {
+
+            var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+
+            if (topic == null)
+            {
+                return BadRequest();
+            }
+
+            return Created(topic.Id.ToString(), null);
+        }
+
+        [HttpGet("{surveyId}/allTopicsFromSurvey")]
+        public async Task<IActionResult> GetAllTopicsFromSurvey([FromRoute] Guid surveyId)
+        {
+            var topics = await _topicsService.GetAllTopicsFromSurvey(surveyId);
+
+            return Ok(topics);
+        }
+
+        //[HttpPost("addTopic")]
+        //public async Task<IActionResult> AddCertainTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
+        //{
+
+        //    var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+
+        //    if (topic == null)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    return Created(topic.Id.ToString(), null);
+        //}
     }
 }
