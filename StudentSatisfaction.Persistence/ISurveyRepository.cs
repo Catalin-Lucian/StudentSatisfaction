@@ -15,5 +15,6 @@ namespace StudentSatisfaction.Persistence
         void Update(Survey survey);
         void Delete(Survey survey);
         Task SaveChanges();
+        void CreateTopic(Topic topic);
     }
 }

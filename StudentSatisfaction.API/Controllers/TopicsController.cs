@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Services.Topics;
 using System;
 using System.Collections.Generic;
@@ -30,29 +31,57 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(topics);
         }
 
-        // GET api/<TopicsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<TopicsController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
-        // POST api/<TopicsController>
+        //adaug un Topic nou
+        //[HttpPost]
+        //public async Task<IActionResult> Post([FromBody] CreateTopicModel model)
+        //{
+        //    var topic = await _topicsService.CreateNewTopic(model);
+
+        //    if (topic == null)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    return Created(topic.Id.ToString(), null);
+        //}
+
+        //adaug un topic in Survey
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromRoute] Guid surveyId, [FromBody] CreateTopicModel model)
         {
+
+            var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+
+            if (topic == null)
+            {
+                return BadRequest();
+            }
+
+            return Created(topic.Id.ToString(), null);
         }
 
-        // PUT api/<TopicsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<TopicsController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
+
+        //delete a certain topic from a certain survey
         // DELETE api/<TopicsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> DeleteFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
         {
+            await _topicsService.Delete(surveyId, topicId);
+
+            return NoContent();
         }
     }
 }

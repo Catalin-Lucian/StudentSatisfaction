@@ -13,19 +13,35 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
     public sealed class TopicsService : ITopicsService
     {
         private readonly ISurveyRepository _surveyRepository;
+        private readonly ITopicRepository _topicRepository;
         private readonly IMapper _mapper;
 
-        public TopicsService(ISurveyRepository surveyRepository, IMapper mapper)
+        public TopicsService(ISurveyRepository surveyRepository, ITopicRepository topicRepository, IMapper mapper)
         {
             _surveyRepository = surveyRepository;
+            _topicRepository = topicRepository;
             _mapper = mapper;
         }
 
-        public async Task<TopicModel> Add(Guid surveyId, CreateTopicModel model)
+        public async Task<TopicModel> CreateNewTopic(CreateTopicModel model)
         {
+            var topic = _mapper.Map<Topic>(model);
+            await _topicRepository.Create(topic);
+            await _topicRepository.SaveChanges();
+
+            return _mapper.Map<TopicModel>(topic);
+        }
+
+        public async Task<TopicModel> AddTopicToSurvey(Guid surveyId, CreateTopicModel model)
+        {
+            //creez noul topic
+            var topic = _mapper.Map<Topic>(model);
+            await _topicRepository.Create(topic);
+            await _topicRepository.SaveChanges();
+
             var survey = await _surveyRepository.GetSurveyById(surveyId);
 
-            var topic = _mapper.Map<Topic>(model);
+            //var topic = _mapper.Map<Topic>(model);
             survey.Topics.Add(topic);
 
             _surveyRepository.Update(survey);

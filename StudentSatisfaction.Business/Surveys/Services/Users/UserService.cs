@@ -55,5 +55,12 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
 
             return _mapper.Map<IEnumerable<UserModel>>(survey.Users);
         }
+
+        public async Task<UserModel> GetById(Guid surveyId, Guid userId)
+        {
+            var survey = await _surveyRepository.GetSurveyById(surveyId);
+
+            return _mapper.Map<UserModel>(survey.Users.FirstOrDefault(u => u.Id == userId));
+        }
     }
 }

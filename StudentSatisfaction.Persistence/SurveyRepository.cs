@@ -49,6 +49,11 @@ namespace StudentSatisfaction.Persistence
             //return await _context.Surveys.FindAsync(id);
         }
 
+        public async void CreateTopic(Topic topic)
+        {
+            await _context.Topics.AddAsync(topic);
+        }
+
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();

@@ -3,7 +3,9 @@ using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
+using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Entities.Surveys;
+using StudentSatisfaction.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +36,14 @@ namespace StudentSatisfaction.Business.Surveys
             CreateMap<Question, UpdateQuestionModel>();
             CreateMap<UpdateQuestionModel, Question>();
 
+
             CreateMap<Topic, TopicModel>();
             CreateMap<TopicModel, Topic>();
+            CreateMap<CreateTopicModel, Topic>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())); ;
+
+
+            CreateMap<User, UserModel>();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
 {
     public interface ITopicsService
     {
-        Task<TopicModel> Add(Guid surveyId, CreateTopicModel model);
+        Task<TopicModel> AddTopicToSurvey(Guid surveyId, CreateTopicModel model);
+        Task<TopicModel> CreateNewTopic(CreateTopicModel model);
 
         Task<IEnumerable<TopicModel>> Get(Guid surveyId);
 
