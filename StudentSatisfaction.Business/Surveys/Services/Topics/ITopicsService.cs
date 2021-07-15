@@ -18,6 +18,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
 
 
         Task<IEnumerable<TopicModel>> GetAllTopicsFromSurvey(Guid surveyId);
+        Task<TopicModel> AddTopicToSurvey(Guid surveyId, Guid topicId);
         Task<TopicModel> AddTopicToSurvey(Guid surveyId, CreateTopicModel model);
         //Task<TopicModel> AddCertainTopicToSurvey(Guid surveyId, Guid topicId);
         Task DeleteTopicFromSurvey(Guid surveyId, Guid topicId);

@@ -84,11 +84,13 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
-        [HttpPost("{surveyId}/addTopic")]
-        public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromBody] CreateTopicModel model)
-        {
 
-            var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+        //functia AddTopicToSurvey e overloaded in TopicRepository --> adauga dupa id sau dupa model
+        [HttpPost("{surveyId}/addTopic/{topicId}")]
+        public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId/*[FromBody] CreateTopicModel model*/)
+        {
+            //var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+            var topic = await _topicsService.AddTopicToSurvey(surveyId, topicId);
 
             if (topic == null)
             {

@@ -63,7 +63,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             await _topicRepository.SaveChanges();
         }
 
-        //ADAUGARE DUPA TOPIC ID!!!!!
+        //ADAUGARE DUPA MODEL -- functia nu e folosita in SurveyController
         public async Task<TopicModel> AddTopicToSurvey(Guid surveyId, CreateTopicModel model)
         {
             //creez noul topic
@@ -81,11 +81,25 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             return _mapper.Map<TopicModel>(topic);
         }
 
-        //public async Task<TopicModel> AddCertainTopicToSurvey(Guid surveyId, Guid topicId)
-        //{
-        //    var survey = await _surveyRepository.GetSurveyById(surveyId);
-        //    var topic = _topicRepository.GetTopicById(topicId);
-        //}
+        //ADAUGARE DUPA TOPIC ID -- functie folosita in SurveyController
+        public async Task<TopicModel> AddTopicToSurvey(Guid surveyId, Guid topicId)
+        {
+            var survey = await _surveyRepository.GetSurveyById(surveyId);
+            var topic = await _topicRepository.GetTopicById(topicId);
+
+            //adaug topic-ul primit doar daca daca survey-ul
+            //nu contine deja topic-ul respectiv
+            if(!survey.Topics.Contains(topic))
+            {
+                survey.Topics.Add(topic);
+
+                _surveyRepository.Update(survey);
+                await _surveyRepository.SaveChanges();
+            }
+
+
+            return _mapper.Map<TopicModel>(topic);
+        }
 
         public async Task DeleteTopicFromSurvey(Guid surveyId, Guid topicId)
         {
