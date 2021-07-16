@@ -46,6 +46,9 @@ namespace StudentSatisfaction.Business.Surveys
 
 
             CreateMap<User, UserModel>();
+            CreateMap<UpdateUserModel, User>();
+            CreateMap<CreateUserModel, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }

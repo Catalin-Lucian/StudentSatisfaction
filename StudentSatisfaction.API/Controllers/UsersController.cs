@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StudentSatisfaction.API.Controllers
 {
-    [Route("api/survey/{surveyId}/users")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -21,41 +22,49 @@ namespace StudentSatisfaction.API.Controllers
             _usersService = usersService;
         }
 
-        //get all users that completed a certain survey
         [HttpGet]
-        public async Task<IActionResult> Get([FromRoute] Guid surveyId)
+        public IActionResult GetAll()
         {
-            var users = await _usersService.Get(surveyId);
+            var users = _usersService.GetAllUsers();
 
             return Ok(users);
         }
 
-        //get a certain user that completed a certain survey
         [HttpGet("{userId}")]
-        public async Task<IActionResult> Get([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        public async Task<IActionResult> GetById([FromRoute] Guid userId)
         {
-            var user = await _usersService.GetById(surveyId, userId);
+            var user = await _usersService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
 
             return Ok(user);
         }
 
-        //// POST api/<UsersController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateUserModel model)
+        {
+            var user = await _usersService.Create(model);
 
-        //// PUT api/<UsersController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+            return Created(user.Id.ToString(), null);
+        }
+
+
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> Put(Guid userId, [FromBody] UpdateUserModel model)
+        {
+            await _usersService.Update(userId, model);
+
+            return NoContent();
+        }
 
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        public async Task<IActionResult> Delete([FromRoute] Guid userId)
         {
-            await _usersService.Delete(surveyId, userId);
+            await _usersService.Delete(userId);
 
             return NoContent();
         }

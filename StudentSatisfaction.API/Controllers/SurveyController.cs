@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
+using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services;
 using StudentSatisfaction.Business.Surveys.Services.Topics;
+using StudentSatisfaction.Business.Surveys.Services.Users;
 using StudentSatisfaction.Persistence;
 using System;
 using System.Threading.Tasks;
@@ -18,12 +20,14 @@ namespace StudentSatisfaction.API.Controllers
     {
         private readonly ISurveyService _surveyService;
         private readonly ITopicsService _topicsService;
+        private readonly IUsersService _usersService;
 
 
-        public SurveyController(ISurveyService surveyService, ITopicsService topicsService)
+        public SurveyController(ISurveyService surveyService, ITopicsService topicsService, IUsersService usersService)
         {
             _surveyService = surveyService;
             _topicsService = topicsService;
+            _usersService = usersService;
         }
 
         [HttpGet("{surveyId}")]
@@ -72,6 +76,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+
         //Manage topics from survey
 
         //delete a certain topic from a certain survey
@@ -100,7 +105,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(topic.Id.ToString(), null);
         }
 
-        [HttpGet("{surveyId}/allTopicsFromSurvey")]
+        [HttpGet("{surveyId}/topics")]
         public async Task<IActionResult> GetAllTopicsFromSurvey([FromRoute] Guid surveyId)
         {
             var topics = await _topicsService.GetAllTopicsFromSurvey(surveyId);
@@ -108,18 +113,48 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(topics);
         }
 
-        //[HttpPost("addTopic")]
-        //public async Task<IActionResult> AddCertainTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
-        //{
 
-        //    var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
+        //Manage the Users that completed a Survey
 
-        //    if (topic == null)
-        //    {
-        //        return BadRequest();
-        //    }
+        //get all users that completed a certain survey
+        [HttpGet("{surveyId}/users")]
+        public async Task<IActionResult> GetAllUsers([FromRoute] Guid surveyId)
+        {
+            var users = await _usersService.GetAllUsersFromSurvey(surveyId);
 
-        //    return Created(topic.Id.ToString(), null);
-        //}
+            return Ok(users);
+        }
+
+        //get a certain user that completed a certain survey
+        [HttpGet("{surveyId}/users/{userId}")]
+        public async Task<IActionResult> Get([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        {
+            var user = await _usersService.GetUserFromSurvey(surveyId, userId);
+
+            return Ok(user);
+        }
+
+        //Mark a user as he never completed the survey
+        [HttpDelete("{surveyId}/users/{userId}")]
+        public async Task<IActionResult> DeleteUserFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        {
+            await _usersService.DeleteUserFromSurvey(surveyId, userId);
+
+            return NoContent();
+        }
+
+        //user completed a survey
+        [HttpPost("{surveyId}/addUser/{userId}")]
+        public async Task<IActionResult> AddUserToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        {
+            var user = await _usersService.AddUserToSurvey(surveyId, userId);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            return Created(user.Id.ToString(), null);
+        }
     }
 }

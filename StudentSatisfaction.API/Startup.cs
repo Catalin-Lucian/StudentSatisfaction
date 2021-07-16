@@ -20,6 +20,7 @@ using StudentSatisfaction.Business.Surveys.Services.Questions;
 using StudentSatisfaction.Business.Surveys;
 using StudentSatisfaction.Business.Surveys.Services.Topics;
 using StudentSatisfaction.Business.Surveys.Services.Users;
+using StudentSatisfaction.Persistence.Repositories.Users;
 
 namespace StudentSatisfaction.API
 {
@@ -54,6 +55,7 @@ namespace StudentSatisfaction.API
             services
                 .AddScoped<ISurveyRepository, SurveyRepository>()
                 .AddScoped<ITopicRepository, TopicRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<ISurveyService, SurveyService>()
                 .AddScoped<IQuestionService, QuestionService>()
                 .AddScoped<ITopicsService, TopicsService>()
