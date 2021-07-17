@@ -59,7 +59,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(trips);
         }
 
-        [HttpDelete("{suvreyId}")]
+        [HttpDelete("{surveyId}")]
         public async Task<IActionResult> DeleteSurvey([FromRoute] Guid surveyId)
         {
             await _surveyService.Delete(surveyId);

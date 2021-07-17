@@ -4,16 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentSatisfaction.Entities.Users
+namespace StudentSatisfaction.Business.Surveys.Models.Notifications
 {
-    public sealed class Notification: Entity
+    public sealed class NotificationModel
     {
-        public Notification(Guid userId, string message): base()
-        {
-            UserId = userId;
-            Message = message;
-        }
-
+        public Guid Id { get; set; }
         public Guid UserId { get; private set; }
         public string Message { get; private set; }
     }

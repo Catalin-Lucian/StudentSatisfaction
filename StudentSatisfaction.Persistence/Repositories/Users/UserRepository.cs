@@ -41,6 +41,11 @@ namespace StudentSatisfaction.Persistence.Repositories.Users
         public async Task<User> GetUserById(Guid id)
         {
             return await _context.Users
+                .Include(x => x.Notifications)
+                .Include(x => x.Surveys)
+                .Include(x => x.Comments)
+                .Include(x => x.Ratings)
+                .Include(x => x.SubmittedQuestions)
                 .FirstAsync(i => i.Id == id);
         }
 

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Users;
+using StudentSatisfaction.Business.Surveys.Services.Notifications;
 using StudentSatisfaction.Business.Surveys.Services.Users;
+using StudentSatisfaction.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +18,13 @@ namespace StudentSatisfaction.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
+        private readonly INotificationsService _notificationsService;
 
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, INotificationsService notificationsService)
         {
             _usersService = usersService;
+            _notificationsService = notificationsService;
         }
 
         [HttpGet]
@@ -67,6 +72,32 @@ namespace StudentSatisfaction.API.Controllers
             await _usersService.Delete(userId);
 
             return NoContent();
+        }
+
+
+        //Manage Notifications from Users
+        [HttpGet("{userId}/notifications")]
+        public async Task<IActionResult> GetAllNotificationsFromUser([FromRoute] Guid userId)
+        {
+            var notification = await _notificationsService.GetAll(userId);
+
+            return Ok(notification);
+        }
+
+        [HttpGet("{userId}/notifications/{notificationId}")]
+        public async Task<IActionResult> Get([FromRoute] Guid userId, [FromRoute] Guid notificationId)
+        {
+            var notification = await _notificationsService.GetById(userId, notificationId);
+
+            return Ok(notification);
+        }
+
+        [HttpPost("{userId}/notifications")]
+        public async Task<IActionResult> CreateNotificationForUser([FromRoute] Guid userId, [FromBody] CreateNotificationModel model)
+        {
+            var user = await _notificationsService.Add(userId, model);
+
+            return Created(user.Id.ToString(), null);
         }
     }
 }

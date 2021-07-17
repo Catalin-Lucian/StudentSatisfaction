@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
+using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Models.Users;
@@ -39,15 +40,20 @@ namespace StudentSatisfaction.Business.Surveys
 
             CreateMap<Topic, TopicModel>();
             CreateMap<TopicModel, Topic>();
-
             CreateMap<UpdateTopicModel, Topic>();
             CreateMap<CreateTopicModel, Topic>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())); ;
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())); 
 
 
             CreateMap<User, UserModel>();
             CreateMap<UpdateUserModel, User>();
             CreateMap<CreateUserModel, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+
+            CreateMap<Notification, NotificationModel>();
+            CreateMap<NotificationModel, Notification>();
+            CreateMap<CreateNotificationModel, Notification>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
