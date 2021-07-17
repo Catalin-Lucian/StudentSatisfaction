@@ -9,8 +9,12 @@ namespace StudentSatisfaction.Business.Surveys.Services.Comments
 {
     public interface ICommentsService
     {
-        Task<CommentModel> Add(Guid surveyId, CreateCommentModel model);
-        Task<IEnumerable<CommentModel>> Get(Guid surveyId);
-        Task Delete(Guid surveyId, Guid commentId);
+        Task<CommentModel> Add(Guid surveyId, Guid userId, CreateCommentModel model);
+        Task<CommentModel> GetCommentById(Guid commentId);
+        Task<IEnumerable<CommentModel>> GetCommentsFromSurvey(Guid surveyId);
+        Task<IEnumerable<CommentModel>> GetCommentsFromUser(Guid userId);
+        Task Update(Guid commentId, UpdateCommentModel model);
+        Task DeleteCommentFromSurvey(Guid surveyId, Guid commentId);
+        Task DeleteCommentFromUser(Guid userId, Guid commentId);
     }
 }

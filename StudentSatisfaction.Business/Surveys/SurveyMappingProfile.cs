@@ -54,6 +54,13 @@ namespace StudentSatisfaction.Business.Surveys
             CreateMap<NotificationModel, Notification>();
             CreateMap<CreateNotificationModel, Notification>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+
+            CreateMap<Comment, CommentModel>();
+            CreateMap<Comment, UpdateCommentModel>();
+            CreateMap<UpdateCommentModel, Comment>();
+            CreateMap<CreateCommentModel, Comment>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }

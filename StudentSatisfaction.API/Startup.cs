@@ -22,6 +22,7 @@ using StudentSatisfaction.Business.Surveys.Services.Topics;
 using StudentSatisfaction.Business.Surveys.Services.Users;
 using StudentSatisfaction.Persistence.Repositories.Users;
 using StudentSatisfaction.Business.Surveys.Services.Notifications;
+using StudentSatisfaction.Persistence.Repositories.Comments;
 
 namespace StudentSatisfaction.API
 {
@@ -57,10 +58,12 @@ namespace StudentSatisfaction.API
                 .AddScoped<ISurveyRepository, SurveyRepository>()
                 .AddScoped<ITopicRepository, TopicRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<ICommentRepository, CommentRepository>()
                 .AddScoped<ISurveyService, SurveyService>()
                 .AddScoped<IQuestionService, QuestionService>()
                 .AddScoped<ITopicsService, TopicsService>()
                 .AddScoped<IUsersService, UserService>()
+                .AddScoped<ICommentsService, CommentsService>()
                 .AddScoped<INotificationsService, NotificationsService>();
             //    .AddScoped<ISurveyService, SurveyService>()
             //    .AddScoped<ICommentsService, CommentsService>()
