@@ -3,6 +3,7 @@ using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
 using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
+using StudentSatisfaction.Business.Surveys.Models.SubmittedQuestions;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Entities.Surveys;
@@ -60,6 +61,12 @@ namespace StudentSatisfaction.Business.Surveys
             CreateMap<Comment, UpdateCommentModel>();
             CreateMap<UpdateCommentModel, Comment>();
             CreateMap<CreateCommentModel, Comment>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+
+            CreateMap<SubmittedQuestion, SubmittedQuestionsModel>();
+            CreateMap<UpdateSubmittedQuestionModel, SubmittedQuestion>();
+            CreateMap<CreateSubmittedQuestionModel, SubmittedQuestion>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }

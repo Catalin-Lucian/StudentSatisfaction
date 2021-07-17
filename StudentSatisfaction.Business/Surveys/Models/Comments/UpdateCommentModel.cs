@@ -8,8 +8,8 @@ namespace StudentSatisfaction.Business.Surveys.Models.Comments
 {
     public sealed class UpdateCommentModel
     {
-        public Guid UserId { get; set; }
-        public Guid SurveyId { get; set; }
+        //public Guid UserId { get; set; }
+        //public Guid SurveyId { get; set; }
         public string CommentText { get; set; }
     }
 }
