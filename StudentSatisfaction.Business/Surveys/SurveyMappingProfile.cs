@@ -21,7 +21,6 @@ namespace StudentSatisfaction.Business.Surveys
         {
             CreateMap<Survey, SurveyModel>();
             CreateMap<SurveyModel, Survey>(); 
-
             //genereaza automat un Guid pt. noul Survey
             CreateMap<CreateSurveyModel, Survey>()
                  .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
