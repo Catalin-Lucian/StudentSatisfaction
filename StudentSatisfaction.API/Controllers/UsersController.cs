@@ -99,5 +99,21 @@ namespace StudentSatisfaction.API.Controllers
 
             return Created(user.Id.ToString(), null);
         }
+
+        [HttpPut("{userId}/notifications/{notificationId}")]
+        public async Task<IActionResult> CreateNotificationForUser([FromRoute] Guid userId, [FromRoute] Guid notificationId, [FromBody] UpdateNotificationModel model)
+        {
+            await _notificationsService.Update(userId, notificationId, model);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{userId}/notifications/{notificationId}")]
+        public async Task<IActionResult> DeleteNotificationFromUser([FromRoute] Guid userId, [FromRoute] Guid notificationId)
+        {
+            await _notificationsService.Delete(userId, notificationId);
+
+            return NoContent();
+        }
     }
 }

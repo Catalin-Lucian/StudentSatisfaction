@@ -60,6 +60,9 @@ namespace StudentSatisfaction.API.Controllers
         [HttpPost("user/{userId}/survey/{surveyId}")]
         public async Task<IActionResult> Post([FromRoute] Guid surveyId, [FromRoute] Guid userId, [FromBody] CreateSubmittedQuestionModel model)
         {
+            model.SurveyId = surveyId;
+            model.UserId = userId;
+
             var submittedQuestion = await _submittedQuestionsService.Add(surveyId, userId, model);
 
             return Created(submittedQuestion.Id.ToString(), null);

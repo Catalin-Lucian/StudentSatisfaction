@@ -3,6 +3,7 @@ using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
 using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
+using StudentSatisfaction.Business.Surveys.Models.Ratings;
 using StudentSatisfaction.Business.Surveys.Models.SubmittedQuestions;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Models.Users;
@@ -53,6 +54,7 @@ namespace StudentSatisfaction.Business.Surveys
 
             CreateMap<Notification, NotificationModel>();
             CreateMap<NotificationModel, Notification>();
+            CreateMap<UpdateNotificationModel, Notification>();
             CreateMap<CreateNotificationModel, Notification>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
@@ -68,6 +70,12 @@ namespace StudentSatisfaction.Business.Surveys
             CreateMap<UpdateSubmittedQuestionModel, SubmittedQuestion>();
             CreateMap<CreateSubmittedQuestionModel, SubmittedQuestion>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+
+            CreateMap<CreateRatingModel, Rating>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+            CreateMap<Rating, RatingModel>();
+            CreateMap<UpdateRatingModel, Rating>();
         }
     }
 }
