@@ -9,7 +9,7 @@ namespace StudentSatisfaction.Business.Surveys.Models.Notifications
     public sealed class NotificationModel
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; private set; }
-        public string Message { get; private set; }
+        public Guid UserId { get; set; }
+        public string Message { get; set; }
     }
 }

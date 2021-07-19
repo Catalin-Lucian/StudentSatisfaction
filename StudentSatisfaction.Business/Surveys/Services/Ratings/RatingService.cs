@@ -69,13 +69,14 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
             //_ratingRepository.Update(rating);
             //await _ratingRepository.SaveChanges();
 
-            //question.Ratings.Add(rating);
-            //_questionRepository.Update(question);
-            //await _questionRepository.SaveChanges();
 
             user.Ratings.Add(rating);
             _userRepository.Update(user);
             await _userRepository.SaveChanges();
+
+            question.Ratings.Add(rating);
+            _questionRepository.Update(question);
+            await _questionRepository.SaveChanges();
 
             return _mapper.Map<RatingModel>(rating); 
         }

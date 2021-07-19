@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Entities.Users;
 using StudentSatisfaction.Persistence;
@@ -6,6 +7,7 @@ using StudentSatisfaction.Persistence.Repositories.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 

@@ -14,8 +14,15 @@ namespace StudentSatisfaction.Persistence.Mappings
         {
             modelBuilder.Entity<Notification>()
                 .Property(q => q.Id)
-                .HasColumnName("id")
-                .IsRequired();
+                .HasColumnName("Id")
+                .IsRequired()
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<Notification>()
+                .Property(q => q.UserId)
+                .HasColumnName("UserId")
+                .IsRequired()
+                .ValueGeneratedNever();
         }
     }
 }
