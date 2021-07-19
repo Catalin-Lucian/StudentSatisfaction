@@ -115,5 +115,33 @@ namespace StudentSatisfaction.API.Controllers
 
             return NoContent();
         }
+
+
+        //Manage answered/not answered surveys from User
+        [HttpGet("{userId}/answeredSurveys")]
+        public async Task<IActionResult> GetAnsweredSurveys([FromRoute] Guid userId)
+        {
+            var surveys = await _usersService.GetAnsweredSurveys(userId);
+
+            if (surveys == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(surveys);
+        }
+
+        [HttpGet("{userId}/notAnsweredSurveys")]
+        public async Task<IActionResult> GetNotAnsweredSurveys([FromRoute] Guid userId)
+        {
+            var surveys = await _usersService.GetNotAnsweredSurveys(userId);
+
+            if (surveys == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(surveys);
+        }
     }
 }

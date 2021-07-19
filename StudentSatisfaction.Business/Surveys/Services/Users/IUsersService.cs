@@ -1,4 +1,5 @@
-﻿using StudentSatisfaction.Business.Surveys.Models.Users;
+﻿using StudentSatisfaction.Business.Surveys.Models;
+using StudentSatisfaction.Business.Surveys.Models.Users;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,5 +32,9 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         Task<UserModel> AddUserToSurvey(Guid surveyId, CreateUserModel model);
         Task DeleteUserFromSurvey(Guid surveyId, Guid userId);
         Task<UserModel> GetUserFromSurvey(Guid surveyId, Guid userId);
+
+
+        Task<IEnumerable<SurveyModel>> GetAnsweredSurveys(Guid userId);
+        Task<IEnumerable<SurveyModel>> GetNotAnsweredSurveys(Guid userId);
     }
 }
