@@ -19,7 +19,6 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-
         public UserService(ISurveyRepository surveyRepository, IUserRepository userRepository, IMapper mapper)
         {
             _surveyRepository = surveyRepository;
