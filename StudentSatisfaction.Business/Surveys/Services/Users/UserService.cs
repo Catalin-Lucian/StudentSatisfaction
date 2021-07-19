@@ -91,8 +91,8 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
             {
                 var currentElement = allSurveys.ElementAt(i);
 
-                //daca survey-ul curent nu se afla in lista de survey-uri la care a raspuns user-ul,
-                //o adaug in lista de rezultate
+                //daca survey-ul curent nu se afla in lista de survey-uri
+                //la care a raspuns user-ul, o adaug in lista de rezultate
                 if (!answeredSurveys.Contains(currentElement))
                     result.Add(currentElement);
             }
