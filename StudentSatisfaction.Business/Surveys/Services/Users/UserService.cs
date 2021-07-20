@@ -81,23 +81,13 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         public async Task<IEnumerable<SurveyModel>> GetNotAnsweredSurveys(Guid userId)
         {
             var user = await _userRepository.GetUserById(userId);
-
-            var allSurveys = _surveyRepository.GetAll();
             var answeredSurveys = user.Surveys;
 
-            var result = new List<Survey>();
+            var surveys = _surveyRepository.GetAll()
+                .Where(s => !answeredSurveys.Contains(s))
+                .Where(s => s.StartDate < DateTime.Now && s.EndDate > DateTime.Now);
 
-            for(var i = 0; i < allSurveys.Count(); i++)
-            {
-                var currentElement = allSurveys.ElementAt(i);
-
-                //daca survey-ul curent nu se afla in lista de survey-uri
-                //la care a raspuns user-ul, o adaug in lista de rezultate
-                if (!answeredSurveys.Contains(currentElement))
-                    result.Add(currentElement);
-            }
-
-            var notAnsweredSurveys = _mapper.Map<IEnumerable<SurveyModel>>(result);
+            var notAnsweredSurveys = _mapper.Map<IEnumerable<SurveyModel>>(surveys);
 
             return notAnsweredSurveys;
         }
