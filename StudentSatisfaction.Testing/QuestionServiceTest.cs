@@ -6,6 +6,7 @@ using AutoMapper;
 using FluentAssertions;
 using Moq;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
+using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services.Questions;
 using StudentSatisfaction.Entities.Surveys;
 using StudentSatisfaction.Persistence;
@@ -71,10 +72,14 @@ namespace StudentSatisfaction.Testing
         {
             //Arrange
             var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
-            var searchedId = Guid.NewGuid();
 
-            var q1 = new Question(searchedId, "plain text", "Question1");
+            var q1 = new Question(Guid.NewGuid(), "plain text", "Question1");
             var q2 = new Question(Guid.NewGuid(), "plain text", "Question2");
+
+            var searchedId = q1.Id;
+
+            //!!!! cum caut o Question cu un ANUMIT id??
+            //q1.Id = searchedId;
 
             survey.Questions.Add(q1);
             survey.Questions.Add(q2);
@@ -91,15 +96,16 @@ namespace StudentSatisfaction.Testing
                 .Setup(s => s.GetSurveyById(survey.Id))
                 .ReturnsAsync(survey);
 
+            //?????
             _mapperMock
-                .Setup(m => m.Map<QuestionModel>(survey.Questions.FirstOrDefault(q => q.Id == searchedId)))
+                .Setup(m => m.Map<QuestionModel>(survey.Questions.FirstOrDefault(q => q.Id == q1.Id)))
                 .Returns(expectedResult);
 
             //Act
-            var questions = await _sut.GetById(survey.Id, searchedId);
+            var question = await _sut.GetById(survey.Id, q1.Id);
 
             //Assert
-            questions.Should().BeEquivalentTo(expectedResult);
+            question.Should().BeEquivalentTo(expectedResult);
         }
     }
 }
