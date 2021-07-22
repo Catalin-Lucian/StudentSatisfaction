@@ -74,7 +74,6 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.Rating", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -169,7 +168,6 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Users.Notification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 

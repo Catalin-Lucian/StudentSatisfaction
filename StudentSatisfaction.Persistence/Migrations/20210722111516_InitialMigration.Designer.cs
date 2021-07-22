@@ -10,8 +10,8 @@ using StudentSatisfaction.Persistence;
 namespace StudentSatisfaction.Persistence.Migrations
 {
     [DbContext(typeof(SurveysContext))]
-    [Migration("20210717112335_FifthMigration")]
-    partial class FifthMigration
+    [Migration("20210722111516_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,7 +76,6 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.Rating", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -171,15 +170,15 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Users.Notification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 

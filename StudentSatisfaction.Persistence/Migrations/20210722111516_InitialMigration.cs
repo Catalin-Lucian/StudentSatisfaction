@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StudentSatisfaction.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,17 +56,17 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Questions",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    survey_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    tip = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    question_text = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SurveyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questions", x => x.id);
+                    table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questions_Survey_survey_id",
-                        column: x => x.survey_id,
+                        name: "FK_Questions_Survey_SurveyId",
+                        column: x => x.SurveyId,
                         principalTable: "Survey",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -126,13 +126,13 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notifications", x => x.id);
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Notifications_Users_UserId",
                         column: x => x.UserId,
@@ -208,7 +208,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                         name: "FK_Ratings_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ratings_Users_UserId",
@@ -234,9 +234,9 @@ namespace StudentSatisfaction.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_survey_id",
+                name: "IX_Questions_SurveyId",
                 table: "Questions",
-                column: "survey_id");
+                column: "SurveyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ratings_QuestionId",
