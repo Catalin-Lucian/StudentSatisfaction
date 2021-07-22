@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 //CreateSurveyModel --> genereaza in Mapper un ID nou
 //SurveyModel ---> are ID-ul deja setat
-
 namespace StudentSatisfaction.API.Controllers
 {
     [Route("api/survey")]
