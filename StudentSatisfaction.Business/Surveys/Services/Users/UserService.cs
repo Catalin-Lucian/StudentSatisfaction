@@ -156,5 +156,14 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
             _surveyRepository.Update(survey);
             await _surveyRepository.SaveChanges();
         }
+
+        public async Task<UserModel> Create(UserModel model)
+        {
+            var user = _mapper.Map<User>(model);
+            await _userRepository.Create(user);
+            await _userRepository.SaveChanges();
+
+            return _mapper.Map<UserModel>(user);
+        }
     }
 }

@@ -28,6 +28,11 @@ using StudentSatisfaction.Persistence.Repositories.SubmittedQuestions;
 using StudentSatisfaction.Business.Surveys.Services.Ratings;
 using StudentSatisfaction.Persistence.Repositories.Questions;
 using StudentSatisfaction.Persistence.Repositories.Ratings;
+using StudentSatisfaction.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace StudentSatisfaction.API
 {
@@ -46,10 +51,39 @@ namespace StudentSatisfaction.API
             //services.AddCors();
             services.AddControllers()
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddDbContext<SurveysContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection")));
 
-            services.AddDbContext<SurveysContext>(config =>
+            //services.AddDbContext<SurveysContext>(config =>
+            //{
+            //    config.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection"));
+            //});
+
+            // For Identity  
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<SurveysContext>()
+                .AddDefaultTokenProviders();
+
+            // Adding Authentication  
+            services.AddAuthentication(options =>
             {
-                config.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection"));
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            // Adding Jwt Bearer  
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
             });
 
             services.AddAutoMapper(config =>
@@ -57,7 +91,43 @@ namespace StudentSatisfaction.API
                 config.AddProfile<SurveyMappingProfile>();
             });
             //services.AddControllers();
-            services.AddSwaggerGen();
+            //services.AddSwaggerGen();
+
+            services.AddSwaggerGen(swagger =>
+            {
+                //This is to generate the Default UI of Swagger Documentation    
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "StudentSatisfaction",
+                    Description = "Authentication and Authorization in ASP.NET 5 with JWT and Swagger"
+                });
+                // To Enable authorization using Swagger (JWT)    
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
+            });
 
             services
                 .AddScoped<ISurveyRepository, SurveyRepository>()
@@ -75,10 +145,6 @@ namespace StudentSatisfaction.API
                 .AddScoped<ISubmittedQuestionsService, SubmittedQuestionService>()
                 .AddScoped<IRatingService, RatingService>()
                 .AddScoped<INotificationsService, NotificationsService>();
-            //    .AddScoped<ISurveyService, SurveyService>()
-            //    .AddScoped<ICommentsService, CommentsService>()
-            //    .AddScoped<IQuestionService, QuestionService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,27 +153,47 @@ namespace StudentSatisfaction.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentSatisfaction.API v1"));
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ASP.NET 5 Web API v1"));
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API - v1");
+                endpoints.MapControllers();
             });
 
-            app.UseHttpsRedirection()
-               .UseRouting()
-               .UseAuthorization()
-               .UseEndpoints(endpoints =>
-               {
-                    endpoints.MapControllers();
-               });
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseSwagger();
+            //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentSatisfaction.API v1"));
+            //}
 
-            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();
-            dbContext.Database.EnsureCreated();
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API - v1");
+            //});
+
+            //app.UseHttpsRedirection()
+            //   .UseRouting()
+            //   .UseAuthorization()
+            //   .UseEndpoints(endpoints =>
+            //   {
+            //        endpoints.MapControllers();
+            //   });
+
+            //using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            //var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();
+            //dbContext.Database.EnsureCreated();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         IEnumerable<UserModel> GetAllUsers();
         Task<UserModel> GetUserById(Guid userId);
         Task<UserModel> Create(CreateUserModel model);
+        Task<UserModel> Create(UserModel model);
         Task Delete(Guid userId);
         Task Update(Guid userId, UpdateUserModel model);
 

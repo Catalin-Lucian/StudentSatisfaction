@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Models.Users;
@@ -51,6 +52,8 @@ namespace StudentSatisfaction.API.Controllers
             return Created(result.Id.ToString(), null);
         }
 
+        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IActionResult GetAllSurveys()
         {
