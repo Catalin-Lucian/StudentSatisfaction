@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Moq;
@@ -61,10 +62,10 @@ namespace StudentSatisfaction.Testing
                 .Returns(expectedResult);
 
             //Act
-            var questions = await _sut.Get(survey.Id);
+            var result = await _sut.Get(survey.Id);
 
             //Assert
-            questions.Should().BeEquivalentTo(expectedResult);
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
@@ -77,9 +78,6 @@ namespace StudentSatisfaction.Testing
             var q2 = new Question(Guid.NewGuid(), "plain text", "Question2");
 
             var searchedId = q1.Id;
-
-            //!!!! cum caut o Question cu un ANUMIT id??
-            //q1.Id = searchedId;
 
             survey.Questions.Add(q1);
             survey.Questions.Add(q2);
@@ -97,8 +95,9 @@ namespace StudentSatisfaction.Testing
                 .ReturnsAsync(survey);
 
             //?????
+            //var searchedQuestion = survey.Questions.FirstOrDefault(q => q.Id == q1.Id);
             _mapperMock
-                .Setup(m => m.Map<QuestionModel>(survey.Questions.FirstOrDefault(q => q.Id == q1.Id)))
+                .Setup(m => m.Map<QuestionModel>(It.Is<Question>(m => m.Id == q1.Id)/*searchedQuestion*/))
                 .Returns(expectedResult);
 
             //Act
