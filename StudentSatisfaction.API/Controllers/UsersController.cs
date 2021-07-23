@@ -21,7 +21,6 @@ namespace StudentSatisfaction.API.Controllers
         private readonly IUsersService _usersService;
         private readonly INotificationsService _notificationsService;
 
-
         public UsersController(IUsersService usersService, INotificationsService notificationsService)
         {
             _usersService = usersService;
