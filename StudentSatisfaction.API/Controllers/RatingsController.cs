@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Ratings;
 using StudentSatisfaction.Business.Surveys.Services.Ratings;
 using System;
@@ -21,15 +22,16 @@ namespace StudentSatisfaction.API.Controllers
             _ratingService = ratingService;
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("users/{userId}")]
-        public async Task<IActionResult> GetAllRatingsRfomUser([FromRoute] Guid userId)
+        public async Task<IActionResult> GetAllRatingsFromUser([FromRoute] Guid userId)
         {
             var ratings = await _ratingService.GetAllFromUser(userId);
 
             return Ok(ratings);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{questionId}")]
         public async Task<IActionResult> GetAllRatingsFromQuestion([FromRoute] Guid questionId)
         {
@@ -38,7 +40,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(ratings);
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         //????????????????????
         [HttpPost("{questionId}/{userId}")]
         public async Task<IActionResult> Post([FromRoute] Guid questionId, [FromRoute] Guid userId, [FromBody] CreateRatingModel model)
@@ -51,6 +53,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(rating.Id.ToString(), null);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("{questionId}/{ratingId}")]
         public async Task<IActionResult> Put([FromRoute] Guid questionId, [FromRoute] Guid ratingId, [FromBody] UpdateRatingModel model)
         {
@@ -60,6 +63,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("{questionId}/{ratingId}")]
         public async Task<IActionResult> Delete([FromRoute]Guid questionId, [FromRoute] Guid ratingId)
         {

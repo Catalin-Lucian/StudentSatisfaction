@@ -30,6 +30,7 @@ namespace StudentSatisfaction.API.Controllers
             _usersService = usersService;
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{surveyId}")]
         public async Task<IActionResult> GetSurvey([FromRoute] Guid surveyId)
         {
@@ -43,6 +44,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(survey);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateSurvey([FromBody] CreateSurveyModel model)
         {
@@ -51,7 +53,6 @@ namespace StudentSatisfaction.API.Controllers
             return Created(result.Id.ToString(), null);
         }
 
-        //[Authorize(Roles = "User")]
         [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IActionResult GetAllSurveys()
@@ -61,6 +62,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(trips);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{surveyId}")]
         public async Task<IActionResult> DeleteSurvey([FromRoute] Guid surveyId)
         {
@@ -70,6 +72,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //primeste ca parametru SurveyModel pt. ca nu vrem sa se genereze un nou PK pt. Survey-ul pe care vrem sa il updatam
+        [Authorize(Roles = "Admin")]
         [HttpPut("{surveyId}")]
         public async Task<IActionResult> UpdateSurvey([FromRoute] Guid surveyId, [FromBody] UpdateSurveyModel model)
         {
@@ -82,6 +85,7 @@ namespace StudentSatisfaction.API.Controllers
         //Manage topics from survey
 
         //delete a certain topic from a certain survey
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{surveyId}/deleteCertain" +
             "Topic/{topicId}")]
         public async Task<IActionResult> DeleteTopicFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
@@ -93,6 +97,7 @@ namespace StudentSatisfaction.API.Controllers
 
 
         //functia AddTopicToSurvey e overloaded in TopicRepository --> adauga dupa id sau dupa model
+        [Authorize(Roles = "Admin")]
         [HttpPost("{surveyId}/addTopic/{topicId}")]
         public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId/*[FromBody] CreateTopicModel model*/)
         {
@@ -107,6 +112,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(topic.Id.ToString(), null);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{surveyId}/topics")]
         public async Task<IActionResult> GetAllTopicsFromSurvey([FromRoute] Guid surveyId)
         {
@@ -119,6 +125,7 @@ namespace StudentSatisfaction.API.Controllers
         //Manage the Users that completed a Survey
 
         //get all users that completed a certain survey
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{surveyId}/users")]
         public async Task<IActionResult> GetAllUsers([FromRoute] Guid surveyId)
         {
@@ -128,6 +135,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //get a certain user that completed a certain survey
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{surveyId}/users/{userId}")]
         public async Task<IActionResult> Get([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {
@@ -137,6 +145,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //Mark a user as he never completed the survey
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{surveyId}/users/{userId}")]
         public async Task<IActionResult> DeleteUserFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {
@@ -146,6 +155,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //user completed a survey
+        [Authorize(Roles = "Admin, User")]
         [HttpPost("{surveyId}/addUser/{userId}")]
         public async Task<IActionResult> AddUserToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {

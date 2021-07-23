@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services.Notifications;
@@ -27,6 +28,7 @@ namespace StudentSatisfaction.API.Controllers
             _notificationsService = notificationsService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -35,6 +37,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById([FromRoute] Guid userId)
         {
@@ -48,6 +51,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserModel model)
         {
@@ -56,7 +60,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(user.Id.ToString(), null);
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("{userId}")]
         public async Task<IActionResult> Put(Guid userId, [FromBody] UpdateUserModel model)
         {
@@ -65,7 +69,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("{userId}")]
         public async Task<IActionResult> Delete([FromRoute] Guid userId)
         {
@@ -76,6 +80,7 @@ namespace StudentSatisfaction.API.Controllers
 
 
         //Manage Notifications from Users
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{userId}/notifications")]
         public async Task<IActionResult> GetAllNotificationsFromUser([FromRoute] Guid userId)
         {
@@ -84,6 +89,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(notification);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{userId}/notifications/{notificationId}")]
         public async Task<IActionResult> Get([FromRoute] Guid userId, [FromRoute] Guid notificationId)
         {
@@ -92,6 +98,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(notification);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("{userId}/notifications")]
         public async Task<IActionResult> CreateNotificationForUser([FromRoute] Guid userId, [FromBody] CreateNotificationModel model)
         {
@@ -100,6 +107,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(user.Id.ToString(), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{userId}/notifications/{notificationId}")]
         public async Task<IActionResult> CreateNotificationForUser([FromRoute] Guid userId, [FromRoute] Guid notificationId, [FromBody] UpdateNotificationModel model)
         {
@@ -108,6 +116,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{userId}/notifications/{notificationId}")]
         public async Task<IActionResult> DeleteNotificationFromUser([FromRoute] Guid userId, [FromRoute] Guid notificationId)
         {
@@ -118,6 +127,7 @@ namespace StudentSatisfaction.API.Controllers
 
 
         //Manage answered/not answered surveys from User
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{userId}/answeredSurveys")]
         public async Task<IActionResult> GetAnsweredSurveys([FromRoute] Guid userId)
         {
@@ -131,6 +141,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(surveys);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{userId}/notAnsweredSurveys")]
         public async Task<IActionResult> GetNotAnsweredSurveys([FromRoute] Guid userId)
         {

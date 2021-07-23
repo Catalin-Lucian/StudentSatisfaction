@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Business.Surveys.Services.Questions;
 using System;
@@ -23,6 +24,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public async Task<IActionResult> Get([FromRoute] Guid surveyId)
         {
@@ -31,6 +33,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(questions);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{questionId}")]
         public async Task<IActionResult> GetById(Guid surveyId, Guid questionId)
         {
@@ -44,7 +47,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(question);
         }
 
-
+        [Authorize(Roles = "Admin")]
         //????????
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateQuestionModel model, [FromRoute] Guid surveyId)
@@ -59,6 +62,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(question.Id.ToString(), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{questionId}")]
         public async Task<IActionResult> Put([FromRoute] Guid surveyId, [FromRoute] Guid questionId, [FromBody] UpdateQuestionModel model)
         {
@@ -67,6 +71,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{questionId}")]
         public async Task<IActionResult> Delete([FromRoute] Guid surveyId, [FromRoute] Guid questionId)
         {

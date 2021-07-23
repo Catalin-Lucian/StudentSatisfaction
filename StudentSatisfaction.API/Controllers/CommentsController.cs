@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Comments;
 using StudentSatisfaction.Business.Surveys.Services;
 using StudentSatisfaction.Business.Surveys.Services.Comments;
@@ -24,7 +25,7 @@ namespace StudentSatisfaction.API.Controllers
             _commentsService = commentsService;
         }
 
-        // GET: api/<CommentsController>
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("survey/{surveyId}")]
         public async Task<IActionResult> GetFromSurvey([FromRoute] Guid surveyId)
         {
@@ -33,6 +34,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(comments);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetFromUser([FromRoute] Guid userId)
         {
@@ -41,7 +43,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(comments);
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{commentId}")]
         public async Task<IActionResult> Get([FromRoute] Guid commentId)
         {
@@ -50,7 +52,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(comment);
         }
 
-
+        [Authorize(Roles = "Admin, User")]
         [HttpPost("{userId}/{surveyId}")]
         public async Task<IActionResult> Post([FromRoute] Guid userId, [FromRoute] Guid surveyId, [FromBody] CreateCommentModel model)
         {
@@ -59,7 +61,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(comment.Id.ToString(), null);
         }
 
-        // PUT api/<CommentsController>/5
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("{commentId}")]
         public async Task<IActionResult> Put([FromRoute] Guid commentId, [FromBody] UpdateCommentModel model)
         {
@@ -68,6 +70,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("{commentId}/survey/{surveyId}/deleteFromSurvey")]
         public async Task<IActionResult> DeleteFromSurvey([FromRoute] Guid surveyId, [FromRoute] Guid commentId)
         {
@@ -76,6 +79,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("{commentId}/user/{userId}/deleteFromUser")]
         public async Task<IActionResult> DeleteFromUser([FromRoute] Guid userId, [FromRoute] Guid commentId)
         {

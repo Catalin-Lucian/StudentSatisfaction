@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Topics;
 using StudentSatisfaction.Business.Surveys.Services.Topics;
 using System;
@@ -23,6 +24,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IActionResult Get()
         {
@@ -31,6 +33,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(topics);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{topicId}")]
         public async Task<IActionResult> Get([FromRoute] Guid topicId)
         {
@@ -44,6 +47,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(topic);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTopicModel model)
         {
@@ -52,7 +56,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(topic.Id.ToString(), null);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{topicId}")]
         public async Task<IActionResult> Put([FromRoute] Guid topicId, [FromBody] UpdateTopicModel model)
         {
@@ -61,6 +65,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{topicId}")]
         public async Task<IActionResult> Delete([FromRoute] Guid topicId)
         {
