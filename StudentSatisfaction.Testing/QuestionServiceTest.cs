@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
+using FluentAssertions.Common;
 using Moq;
 using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Business.Surveys.Models.Users;
@@ -94,10 +95,8 @@ namespace StudentSatisfaction.Testing
                 .Setup(s => s.GetSurveyById(survey.Id))
                 .ReturnsAsync(survey);
 
-            //?????
-            //var searchedQuestion = survey.Questions.FirstOrDefault(q => q.Id == q1.Id);
             _mapperMock
-                .Setup(m => m.Map<QuestionModel>(It.Is<Question>(m => m.Id == q1.Id)/*searchedQuestion*/))
+                .Setup(m => m.Map<QuestionModel>(It.Is<Question>(q => q.Id == searchedId)))
                 .Returns(expectedResult);
 
             //Act
@@ -105,6 +104,55 @@ namespace StudentSatisfaction.Testing
 
             //Assert
             question.Should().BeEquivalentTo(expectedResult);
+        }
+
+        [Fact]
+        public async void When_AddIsCalled_WithASpecificSurveyIdAndACreateQuestionModel_AQuestion_ShouldBeAddedToTheSurvey()
+        {
+            //Arrange
+            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
+
+            var model = new CreateQuestionModel()
+            {
+                SurveyId = survey.Id,
+                QuestionText = "Random Question",
+                Type = "plain text"
+            };
+
+            var question = new Question(model.SurveyId, model.Type, model.QuestionText);
+            var expectedResult = new QuestionModel()
+            {
+                Id = question.Id,
+                SurveyId = question.SurveyId,
+                QuestionText = question.QuestionText,
+                Type = question.Type
+            };
+
+            _surveyRepositoryMock
+                .Setup(s => s.GetSurveyById(survey.Id))
+                .ReturnsAsync(survey);
+
+            _mapperMock
+                .Setup(m => m.Map<Question>(model))
+                .Returns(question);
+
+
+            _surveyRepositoryMock
+                .Setup(m => m.Update(survey));
+
+            _surveyRepositoryMock
+                .Setup(m => m.SaveChanges())
+                .Returns(Task.CompletedTask);
+
+            _mapperMock
+                .Setup(m => m.Map<QuestionModel>(question))
+                .Returns(expectedResult);
+            
+            //Act
+            var result = await _sut.Add(survey.Id, model);
+            
+            //Assert
+            result.Should().BeEquivalentTo(expectedResult);
         }
     }
 }
