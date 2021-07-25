@@ -111,6 +111,7 @@ namespace StudentSatisfaction.Testing
         {
             //Arrange
             var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
+            var surveyQuestionSize = survey.Questions.Count();
 
             var model = new CreateQuestionModel()
             {
@@ -153,6 +154,75 @@ namespace StudentSatisfaction.Testing
             
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
+            survey.Questions.Count().Should().Be(surveyQuestionSize+1);
+        }
+
+        [Fact]
+        public async void When_DeleteIsCalled_WithASurveyIdAndAQuestionId_TheQuestionWithThatId_ShouldBeRemovedFromTheSurveyWithTheSpecifiedId()
+        {
+            //Arrange
+            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
+
+            var question = new Question(survey.Id, "plain text", "question 1");
+            survey.Questions.Add(question);
+
+            var surveyQuestionSize = survey.Questions.Count();
+
+            _surveyRepositoryMock
+                .Setup(m => m.GetSurveyById(survey.Id))
+                .ReturnsAsync(survey);
+
+            _surveyRepositoryMock
+                .Setup(m => m.Update(survey));
+
+            _surveyRepositoryMock
+                .Setup(m => m.SaveChanges())
+                .Returns(Task.CompletedTask);
+
+            //Act
+            await _sut.Delete(survey.Id, question.Id);
+
+            //Assert
+            survey.Questions.Count().Should().Be(surveyQuestionSize - 1);
+        }
+
+        //??????
+        [Fact]
+        public async void When_UpdateIsCalled_WithASurveyIdAndAQuestionIdAndAUpdateQuestionModel_TheQuestionListFromThatSurvey_ShouldBeUpdated_WithTheSpecifiedModel()
+        {
+            //Arrange
+            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
+
+            var question = new Question(survey.Id, "plain text", "random question");
+            survey.Questions.Add(question);
+
+            var model = new UpdateQuestionModel()
+            {
+                QuestionText = "updated question text",
+                Type = "plain text"
+            };
+
+            var expectedResult = question;
+
+            _surveyRepositoryMock
+                .Setup(m => m.GetSurveyById(survey.Id))
+                .ReturnsAsync(survey);
+
+            _mapperMock
+                .Setup(m => m.Map(model, question))
+                .Returns(expectedResult);
+
+            _surveyRepositoryMock
+                .Setup(m => m.Update(survey));
+
+            _surveyRepositoryMock
+                .Setup(m => m.SaveChanges())
+                .Returns(Task.CompletedTask);
+
+            //Act
+            await _sut.Update(survey.Id, question.Id, model);
+
+            //Assert
         }
     }
 }
