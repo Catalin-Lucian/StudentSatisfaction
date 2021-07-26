@@ -44,11 +44,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Notifications
 
             var notification = _mapper.Map<Notification>(model);
 
-            //daca user-ul respectiv nu are notificarea respectiva, o adaug
-            //if(!user.Notifications.Contains(notification))
-            //{
-                user.Notifications.Add(notification);
-            //}
+            user.Notifications.Add(notification);
 
             _userRepository.Update(user);
             await _userRepository.SaveChanges();

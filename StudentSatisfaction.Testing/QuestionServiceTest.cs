@@ -21,7 +21,9 @@ namespace StudentSatisfaction.Testing
         private readonly MockRepository _mockRepository;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<ISurveyRepository> _surveyRepositoryMock;
-        private readonly QuestionService _sut;
+        private readonly IQuestionService _sut;
+
+        private readonly Survey _survey;
 
         public QuestionServiceTest()
         {
@@ -30,6 +32,8 @@ namespace StudentSatisfaction.Testing
             _mapperMock = _mockRepository.Create<IMapper>();
 
             _sut = new QuestionService(_surveyRepositoryMock.Object, _mapperMock.Object);
+
+            _survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
         }
 
         //se apeleaza dupa fiecare test in parte
@@ -42,11 +46,10 @@ namespace StudentSatisfaction.Testing
         public async void When_Get_IsCalled_Expect_QuestionsToBeReturned()
         {
             //Arrange
-            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
-            survey.Questions.Add(new Question(Guid.NewGuid(), "plain text", "Question1"));
-            survey.Questions.Add(new Question(Guid.NewGuid(), "plain text", "Question2"));
+            _survey.Questions.Add(new Question(Guid.NewGuid(), "plain text", "Question1"));
+            _survey.Questions.Add(new Question(Guid.NewGuid(), "plain text", "Question2"));
 
-            var expectedResult = survey.Questions.Select(q => new QuestionModel()
+            var expectedResult = _survey.Questions.Select(q => new QuestionModel()
             {
                 Type = q.Type,
                 QuestionText = q.QuestionText,
@@ -55,15 +58,15 @@ namespace StudentSatisfaction.Testing
             });
 
             _surveyRepositoryMock
-                .Setup(s => s.GetSurveyById(survey.Id))
-                .ReturnsAsync(survey);
+                .Setup(s => s.GetSurveyById(_survey.Id))
+                .ReturnsAsync(_survey);
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<QuestionModel>>(survey.Questions))
+                .Setup(m => m.Map<IEnumerable<QuestionModel>>(_survey.Questions))
                 .Returns(expectedResult);
 
             //Act
-            var result = await _sut.Get(survey.Id);
+            var result = await _sut.Get(_survey.Id);
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
@@ -73,15 +76,13 @@ namespace StudentSatisfaction.Testing
         public async void When_GetById_IsCalled_Expect_QuestionWithSpecifiedId_ToBeReturned()
         {
             //Arrange
-            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
-
             var q1 = new Question(Guid.NewGuid(), "plain text", "Question1");
             var q2 = new Question(Guid.NewGuid(), "plain text", "Question2");
 
             var searchedId = q1.Id;
 
-            survey.Questions.Add(q1);
-            survey.Questions.Add(q2);
+            _survey.Questions.Add(q1);
+            _survey.Questions.Add(q2);
 
             var expectedResult = new QuestionModel()
             {
@@ -92,15 +93,15 @@ namespace StudentSatisfaction.Testing
             };
 
             _surveyRepositoryMock
-                .Setup(s => s.GetSurveyById(survey.Id))
-                .ReturnsAsync(survey);
+                .Setup(s => s.GetSurveyById(_survey.Id))
+                .ReturnsAsync(_survey);
 
             _mapperMock
                 .Setup(m => m.Map<QuestionModel>(It.Is<Question>(q => q.Id == searchedId)))
                 .Returns(expectedResult);
 
             //Act
-            var question = await _sut.GetById(survey.Id, q1.Id);
+            var question = await _sut.GetById(_survey.Id, q1.Id);
 
             //Assert
             question.Should().BeEquivalentTo(expectedResult);
@@ -110,12 +111,11 @@ namespace StudentSatisfaction.Testing
         public async void When_AddIsCalled_WithASpecificSurveyIdAndACreateQuestionModel_AQuestion_ShouldBeAddedToTheSurvey()
         {
             //Arrange
-            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
-            var surveyQuestionSize = survey.Questions.Count();
+            var surveyQuestionSize = _survey.Questions.Count();
 
             var model = new CreateQuestionModel()
             {
-                SurveyId = survey.Id,
+                SurveyId = _survey.Id,
                 QuestionText = "Random Question",
                 Type = "plain text"
             };
@@ -130,8 +130,8 @@ namespace StudentSatisfaction.Testing
             };
 
             _surveyRepositoryMock
-                .Setup(s => s.GetSurveyById(survey.Id))
-                .ReturnsAsync(survey);
+                .Setup(s => s.GetSurveyById(_survey.Id))
+                .ReturnsAsync(_survey);
 
             _mapperMock
                 .Setup(m => m.Map<Question>(model))
@@ -139,7 +139,7 @@ namespace StudentSatisfaction.Testing
 
 
             _surveyRepositoryMock
-                .Setup(m => m.Update(survey));
+                .Setup(m => m.Update(_survey));
 
             _surveyRepositoryMock
                 .Setup(m => m.SaveChanges())
@@ -150,40 +150,38 @@ namespace StudentSatisfaction.Testing
                 .Returns(expectedResult);
             
             //Act
-            var result = await _sut.Add(survey.Id, model);
+            var result = await _sut.Add(_survey.Id, model);
             
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
-            survey.Questions.Count().Should().Be(surveyQuestionSize+1);
+            _survey.Questions.Count().Should().Be(surveyQuestionSize+1);
         }
 
         [Fact]
         public async void When_DeleteIsCalled_WithASurveyIdAndAQuestionId_TheQuestionWithThatId_ShouldBeRemovedFromTheSurveyWithTheSpecifiedId()
         {
             //Arrange
-            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
+            var question = new Question(_survey.Id, "plain text", "question 1");
+            _survey.Questions.Add(question);
 
-            var question = new Question(survey.Id, "plain text", "question 1");
-            survey.Questions.Add(question);
-
-            var surveyQuestionSize = survey.Questions.Count();
+            var surveyQuestionSize = _survey.Questions.Count();
 
             _surveyRepositoryMock
-                .Setup(m => m.GetSurveyById(survey.Id))
-                .ReturnsAsync(survey);
+                .Setup(m => m.GetSurveyById(_survey.Id))
+                .ReturnsAsync(_survey);
 
             _surveyRepositoryMock
-                .Setup(m => m.Update(survey));
+                .Setup(m => m.Update(_survey));
 
             _surveyRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
 
             //Act
-            await _sut.Delete(survey.Id, question.Id);
+            await _sut.Delete(_survey.Id, question.Id);
 
             //Assert
-            survey.Questions.Count().Should().Be(surveyQuestionSize - 1);
+            _survey.Questions.Count().Should().Be(surveyQuestionSize - 1);
         }
 
         //??????
@@ -191,10 +189,8 @@ namespace StudentSatisfaction.Testing
         public async void When_UpdateIsCalled_WithASurveyIdAndAQuestionIdAndAUpdateQuestionModel_TheQuestionListFromThatSurvey_ShouldBeUpdated_WithTheSpecifiedModel()
         {
             //Arrange
-            var survey = new Survey("Title", DateTime.Now, DateTime.Now.AddMonths(1));
-
-            var question = new Question(survey.Id, "plain text", "random question");
-            survey.Questions.Add(question);
+            var question = new Question(_survey.Id, "plain text", "random question");
+            _survey.Questions.Add(question);
 
             var model = new UpdateQuestionModel()
             {
@@ -205,22 +201,22 @@ namespace StudentSatisfaction.Testing
             var expectedResult = question;
 
             _surveyRepositoryMock
-                .Setup(m => m.GetSurveyById(survey.Id))
-                .ReturnsAsync(survey);
+                .Setup(m => m.GetSurveyById(_survey.Id))
+                .ReturnsAsync(_survey);
 
             _mapperMock
                 .Setup(m => m.Map(model, question))
                 .Returns(expectedResult);
 
             _surveyRepositoryMock
-                .Setup(m => m.Update(survey));
+                .Setup(m => m.Update(_survey));
 
             _surveyRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
 
             //Act
-            await _sut.Update(survey.Id, question.Id, model);
+            await _sut.Update(_survey.Id, question.Id, model);
 
             //Assert
         }
