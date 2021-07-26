@@ -37,7 +37,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(users);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById([FromRoute] Guid userId)
         {
