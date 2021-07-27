@@ -24,7 +24,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<IActionResult> Get([FromRoute] Guid surveyId)
         {
@@ -33,7 +33,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(questions);
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{questionId}")]
         public async Task<IActionResult> GetById(Guid surveyId, Guid questionId)
         {
@@ -48,7 +48,6 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        //????????
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateQuestionModel model, [FromRoute] Guid surveyId)
         {

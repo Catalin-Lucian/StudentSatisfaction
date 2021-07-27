@@ -128,9 +128,10 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("assignRole")]
-        public async Task<IActionResult> MakeAdmin(string username, string roleId)
+        public async Task<IActionResult> AssignRole(string username, string roleId)
         {
             var user = await userManager.FindByNameAsync(username);
 
@@ -157,6 +158,16 @@ namespace StudentSatisfaction.API.Controllers
             await _usersService.Update(new Guid(user.Id), userUpdatedModel);
 
             return Ok(new { Status = "Success", Message = "User role successfully updated!" });
+        }
+
+        [HttpGet]
+        [Route("user")]
+        public async Task<IActionResult> GetUserDataByToken()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            var user= await _usersService.GetUserById(new Guid(userId));
+            return Ok(user);
+
         }
     }
 }
