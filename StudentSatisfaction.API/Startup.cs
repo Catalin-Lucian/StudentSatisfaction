@@ -191,9 +191,9 @@ namespace StudentSatisfaction.API
             //        endpoints.MapControllers();
             //   });
 
-            //using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            //var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();
-            //dbContext.Database.EnsureCreated();
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();
+            dbContext.Database.EnsureCreated();
         }
     }
 }

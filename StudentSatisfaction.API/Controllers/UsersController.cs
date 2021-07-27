@@ -37,7 +37,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(users);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById([FromRoute] Guid userId)
         {
@@ -127,7 +127,7 @@ namespace StudentSatisfaction.API.Controllers
 
 
         //Manage answered/not answered surveys from User
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("{userId}/answeredSurveys")]
         public async Task<IActionResult> GetAnsweredSurveys([FromRoute] Guid userId)
         {

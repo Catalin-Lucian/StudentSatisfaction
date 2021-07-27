@@ -198,7 +198,7 @@ namespace StudentSatisfaction.Testing
         }
 
         [Fact]
-        public async void When_UpdateIsCalled_WithACommentIdAndAnUpdateCommentModel_Expect_ThatCommentToBeAddedToTheCommentsRepository()
+        public void When_UpdateIsCalled_WithACommentIdAndAnUpdateCommentModel_Expect_ThatCommentToBeAddedToTheCommentsRepository()
         {
             //Arrange
             var model = new UpdateCommentModel()

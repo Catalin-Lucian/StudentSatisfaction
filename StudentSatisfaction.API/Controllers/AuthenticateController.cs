@@ -44,7 +44,9 @@ namespace StudentSatisfaction.API.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
+            //var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByEmailAsync(model.Email);
+
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
                 var userRoles = await userManager.GetRolesAsync(user);
@@ -88,6 +90,12 @@ namespace StudentSatisfaction.API.Controllers
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
 
+            ////////
+            userExists = await userManager.FindByEmailAsync(model.Email);
+            if (userExists != null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
+            ////////
+
             ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
@@ -98,11 +106,15 @@ namespace StudentSatisfaction.API.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
+            //adaugare rol de "User" pt. noul user creat
+            var createdUser = await userManager.FindByNameAsync(model.Username);
+            await userManager.AddToRoleAsync(user, "User");
+
             //Adaug noul User creat la Register si in tabela Users
             var newUser = new UserModel()
             {
                 Id = new Guid(user.Id),
-                Type = "",
+                Type = "User",
                 Password = user.PasswordHash,
                 Name = model.Name,
                 Username = model.Username,
