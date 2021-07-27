@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StudentSatisfaction.Entities;
 
 namespace StudentSatisfaction.Persistence.Repositories.Users
 {
@@ -19,29 +20,37 @@ namespace StudentSatisfaction.Persistence.Repositories.Users
             _context = context;
         }
 
-        public async Task Create(User user)
+        public async Task Create(UserData userData)
         {
-            await _context.Users.AddAsync(user);
+            await _context.UsersData.AddAsync(userData);
         }
 
-        public void Update(User user)
+        public void Update(UserData userData)
         {
-            _context.Users.Update(user);
+            _context.UsersData.Update(userData);
         }
 
-        public void Delete(User user)
+        public void Delete(UserData userData)
         {
+            //remove the user from the Users table
+            _context.UsersData.Remove(userData);
+        }
+
+        public async Task DeleteCredentials(Guid userId)
+        {
+            //remove the user from the AspNetUsers table
+            var user = await _context.Users.FirstAsync(u => u.Id == userId.ToString());
             _context.Users.Remove(user);
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserData> GetAll()
         {
-            return _context.Users;
+            return _context.UsersData;
         }
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<UserData> GetUserById(Guid id)
         {
-            return await _context.Users
+            return await _context.UsersData
                 .Include(x => x.Notifications)
                 .Include(x => x.Surveys)
                 .Include(x => x.Comments)

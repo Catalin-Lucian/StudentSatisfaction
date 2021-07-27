@@ -15,18 +15,8 @@ namespace StudentSatisfaction.Persistence.Mappings
         {
             modelBuilder.Entity<Rating>()
                 .Property(s => s.Id)
-                .HasColumnName("id")
+                .HasColumnName("Id")
                 .ValueGeneratedNever()
-                .IsRequired();
-
-            modelBuilder.Entity<Rating>()
-                .Property(s => s.Points)
-                .HasColumnName("points")
-                .IsRequired();
-
-            modelBuilder.Entity<Rating>()
-                .Property(s => s.Answear)
-                .HasColumnName("answear")
                 .IsRequired();
         }
     }

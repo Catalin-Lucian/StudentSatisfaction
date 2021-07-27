@@ -50,34 +50,34 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Survey",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Survey", x => x.id);
+                    table.PrimaryKey("PK_Survey", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Topics",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Topics", x => x.id);
+                    table.PrimaryKey("PK_Topics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UsersData",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -88,7 +88,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.PrimaryKey("PK_UsersData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,7 +213,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                         name: "FK_Questions_Survey_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Survey",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -231,13 +231,13 @@ namespace StudentSatisfaction.Persistence.Migrations
                         name: "FK_SurveysTopics_Survey_SurveysId",
                         column: x => x.SurveysId,
                         principalTable: "Survey",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SurveysTopics_Topics_TopicsId",
                         column: x => x.TopicsId,
                         principalTable: "Topics",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -245,25 +245,26 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserDataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Comments_Survey_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Survey",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "id",
+                        name: "FK_Comments_UsersData_UserDataId",
+                        column: x => x.UserDataId,
+                        principalTable: "UsersData",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -273,16 +274,17 @@ namespace StudentSatisfaction.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserDataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notifications_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "id",
+                        name: "FK_Notifications_UsersData_UserDataId",
+                        column: x => x.UserDataId,
+                        principalTable: "UsersData",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -290,25 +292,26 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "SubmittedQuestions",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserDataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubmittedQuestions", x => x.id);
+                    table.PrimaryKey("PK_SubmittedQuestions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SubmittedQuestions_Survey_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Survey",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SubmittedQuestions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "id",
+                        name: "FK_SubmittedQuestions_UsersData_UserDataId",
+                        column: x => x.UserDataId,
+                        principalTable: "UsersData",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -326,13 +329,13 @@ namespace StudentSatisfaction.Persistence.Migrations
                         name: "FK_UserSurveys_Survey_SurveysId",
                         column: x => x.SurveysId,
                         principalTable: "Survey",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserSurveys_Users_UsersId",
+                        name: "FK_UserSurveys_UsersData_UsersId",
                         column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "id",
+                        principalTable: "UsersData",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -340,15 +343,16 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Ratings",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    points = table.Column<int>(type: "int", nullable: false),
-                    answear = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Points = table.Column<int>(type: "int", nullable: false),
+                    Answear = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserDataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ratings", x => x.id);
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Ratings_Questions_QuestionId",
                         column: x => x.QuestionId,
@@ -356,10 +360,10 @@ namespace StudentSatisfaction.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ratings_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "id",
+                        name: "FK_Ratings_UsersData_UserDataId",
+                        column: x => x.UserDataId,
+                        principalTable: "UsersData",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -408,14 +412,14 @@ namespace StudentSatisfaction.Persistence.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
+                name: "IX_Comments_UserDataId",
                 table: "Comments",
-                column: "UserId");
+                column: "UserDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_UserId",
+                name: "IX_Notifications_UserDataId",
                 table: "Notifications",
-                column: "UserId");
+                column: "UserDataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId",
@@ -428,9 +432,9 @@ namespace StudentSatisfaction.Persistence.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ratings_UserId",
+                name: "IX_Ratings_UserDataId",
                 table: "Ratings",
-                column: "UserId");
+                column: "UserDataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubmittedQuestions_SurveyId",
@@ -438,9 +442,9 @@ namespace StudentSatisfaction.Persistence.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubmittedQuestions_UserId",
+                name: "IX_SubmittedQuestions_UserDataId",
                 table: "SubmittedQuestions",
-                column: "UserId");
+                column: "UserDataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveysTopics_TopicsId",
@@ -501,7 +505,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                 name: "Topics");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UsersData");
 
             migrationBuilder.DropTable(
                 name: "Survey");

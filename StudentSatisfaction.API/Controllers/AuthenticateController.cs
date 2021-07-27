@@ -88,12 +88,12 @@ namespace StudentSatisfaction.API.Controllers
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Username already exists!" });
 
             ////////
             userExists = await userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Email already exists!" });
             ////////
 
             ApplicationUser user = new ApplicationUser()
@@ -106,11 +106,11 @@ namespace StudentSatisfaction.API.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            //adaugare rol de "User" pt. noul user creat
+            //adaugare rol de "UserData" pt. noul user creat
             var createdUser = await userManager.FindByNameAsync(model.Username);
             await userManager.AddToRoleAsync(user, "User");
 
-            //Adaug noul User creat la Register si in tabela Users
+            //Adaug noul UserData creat la Register si in tabela UsersData
             var newUser = new UserModel()
             {
                 Id = new Guid(user.Id),
@@ -142,7 +142,7 @@ namespace StudentSatisfaction.API.Controllers
             await userManager.AddToRoleAsync(user, roleName);
 
 
-            //odata asignat un rol pt. un utilizator, se face update si la campul type din tabela Users
+            //odata asignat un rol pt. un utilizator, se face update si la campul type din tabela UsersData
             var userToUpdate = await _usersService.GetUserById(new Guid(user.Id));
             var userUpdatedModel = new UpdateUserModel()
             {

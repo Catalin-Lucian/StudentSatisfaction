@@ -13,34 +13,34 @@ namespace StudentSatisfaction.Persistence.Mappings
     {
         internal static void Map(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserData>()
                 .Property(q => q.Id)
-                .HasColumnName("id")
+                .HasColumnName("Id")
                 .IsRequired();
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserData>()
                 .HasMany<SubmittedQuestion>(u => u.SubmittedQuestions)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserData>()
                 .HasMany<Rating>(u => u.Ratings)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserData>()
                 .HasMany<Comment>(u => u.Comments)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
             //exista intr-o singura parte!
 
-            //modelBuilder.Entity<User>()
+            //modelBuilder.Entity<UserData>()
             //    .HasMany<Survey>(u => u.Surveys)
             //    .WithOne()
             //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserData>()
                 .HasMany<Notification>(u => u.Notifications)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);

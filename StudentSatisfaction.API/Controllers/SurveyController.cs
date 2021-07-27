@@ -30,7 +30,7 @@ namespace StudentSatisfaction.API.Controllers
             _usersService = usersService;
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpGet("{surveyId}")]
         public async Task<IActionResult> GetSurvey([FromRoute] Guid surveyId)
         {
@@ -53,7 +53,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(result.Id.ToString(), null);
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpGet]
         public IActionResult GetAllSurveys()
         {
@@ -112,7 +112,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(topic.Id.ToString(), null);
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpGet("{surveyId}/topics")]
         public async Task<IActionResult> GetAllTopicsFromSurvey([FromRoute] Guid surveyId)
         {
@@ -122,10 +122,10 @@ namespace StudentSatisfaction.API.Controllers
         }
 
 
-        //Manage the Users that completed a Survey
+        //Manage the UsersData that completed a Survey
 
         //get all users that completed a certain survey
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpGet("{surveyId}/users")]
         public async Task<IActionResult> GetAllUsers([FromRoute] Guid surveyId)
         {
@@ -135,7 +135,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //get a certain user that completed a certain survey
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpGet("{surveyId}/users/{userId}")]
         public async Task<IActionResult> Get([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {
@@ -155,7 +155,7 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         //user completed a survey
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, UserData")]
         [HttpPost("{surveyId}/addUser/{userId}")]
         public async Task<IActionResult> AddUserToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {

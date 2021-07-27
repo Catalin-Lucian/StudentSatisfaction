@@ -10,7 +10,7 @@ using StudentSatisfaction.Persistence;
 namespace StudentSatisfaction.Persistence.Migrations
 {
     [DbContext(typeof(SurveysContext))]
-    [Migration("20210723091559_InitialMigration")]
+    [Migration("20210727095924_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,14 +220,16 @@ namespace StudentSatisfaction.Persistence.Migrations
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.Comment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("CommentText")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserDataId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -237,7 +239,7 @@ namespace StudentSatisfaction.Persistence.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Comments");
                 });
@@ -273,18 +275,18 @@ namespace StudentSatisfaction.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Answear")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("answear");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Points")
-                        .HasColumnType("int")
-                        .HasColumnName("points");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserDataId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -294,7 +296,7 @@ namespace StudentSatisfaction.Persistence.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Ratings");
                 });
@@ -304,12 +306,15 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("QuestionText")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserDataId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -319,7 +324,7 @@ namespace StudentSatisfaction.Persistence.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("SubmittedQuestions");
                 });
@@ -329,7 +334,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -350,7 +355,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
@@ -372,23 +377,26 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserDataId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("StudentSatisfaction.Entities.Users.User", b =>
+            modelBuilder.Entity("StudentSatisfaction.Entities.Users.UserData", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -413,7 +421,7 @@ namespace StudentSatisfaction.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("UsersData");
                 });
 
             modelBuilder.Entity("SurveyTopic", b =>
@@ -431,7 +439,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.ToTable("SurveysTopics");
                 });
 
-            modelBuilder.Entity("SurveyUser", b =>
+            modelBuilder.Entity("SurveyUserData", b =>
                 {
                     b.Property<Guid>("SurveysId")
                         .HasColumnType("uniqueidentifier");
@@ -505,11 +513,10 @@ namespace StudentSatisfaction.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentSatisfaction.Entities.Users.User", null)
+                    b.HasOne("StudentSatisfaction.Entities.Users.UserData", null)
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.Question", b =>
@@ -529,11 +536,10 @@ namespace StudentSatisfaction.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentSatisfaction.Entities.Users.User", null)
+                    b.HasOne("StudentSatisfaction.Entities.Users.UserData", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("StudentSatisfaction.Entities.Surveys.SubmittedQuestion", b =>
@@ -544,20 +550,18 @@ namespace StudentSatisfaction.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentSatisfaction.Entities.Users.User", null)
+                    b.HasOne("StudentSatisfaction.Entities.Users.UserData", null)
                         .WithMany("SubmittedQuestions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("StudentSatisfaction.Entities.Users.Notification", b =>
                 {
-                    b.HasOne("StudentSatisfaction.Entities.Users.User", null)
+                    b.HasOne("StudentSatisfaction.Entities.Users.UserData", null)
                         .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SurveyTopic", b =>
@@ -575,7 +579,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SurveyUser", b =>
+            modelBuilder.Entity("SurveyUserData", b =>
                 {
                     b.HasOne("StudentSatisfaction.Entities.Surveys.Survey", null)
                         .WithMany()
@@ -583,7 +587,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentSatisfaction.Entities.Users.User", null)
+                    b.HasOne("StudentSatisfaction.Entities.Users.UserData", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -604,7 +608,7 @@ namespace StudentSatisfaction.Persistence.Migrations
                     b.Navigation("SubmittedQuestions");
                 });
 
-            modelBuilder.Entity("StudentSatisfaction.Entities.Users.User", b =>
+            modelBuilder.Entity("StudentSatisfaction.Entities.Users.UserData", b =>
                 {
                     b.Navigation("Comments");
 

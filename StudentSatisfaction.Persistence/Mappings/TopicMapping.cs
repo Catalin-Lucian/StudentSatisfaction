@@ -14,7 +14,7 @@ namespace StudentSatisfaction.Persistence.Mappings
         {
             modelBuilder.Entity<Topic>()
                 .Property(q => q.Id)
-                .HasColumnName("id")
+                .HasColumnName("Id")
                 .IsRequired();
         }
     }

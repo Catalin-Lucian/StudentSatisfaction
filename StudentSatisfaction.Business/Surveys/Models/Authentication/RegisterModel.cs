@@ -9,7 +9,7 @@ namespace StudentSatisfaction.Business.Surveys.Models.RegisterModel
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "User Name is required")]
+        [Required(ErrorMessage = "UserData Name is required")]
         public string Username { get; set; }
 
         [EmailAddress]

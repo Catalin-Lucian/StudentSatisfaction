@@ -23,7 +23,7 @@ namespace StudentSatisfaction.Testing
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly INotificationsService _sut;
 
-        private readonly User _user;
+        private readonly UserData _userData;
 
         public NotificationServiceTest()
         {
@@ -32,7 +32,7 @@ namespace StudentSatisfaction.Testing
             _mapperMock = _mockRepository.Create<IMapper>();
 
             _sut = new NotificationsService(_userRepositoryMock.Object, _mapperMock.Object);
-            _user = new User("User", "Username", "password", "Random name", "something@gmail.com",
+            _userData = new UserData("UserData", "Username", "password", "Random name", "something@gmail.com",
                 new DateTime(1999, 1, 12, 9, 10, 0), "AC");
         }
 
@@ -46,7 +46,7 @@ namespace StudentSatisfaction.Testing
         public async void When_GetAll_IsCalled_Expect_NotificationsFromUserToBeReturned()
         {
             //Arrange
-            var expectedResult = _user.Notifications.Select(n => new NotificationModel()
+            var expectedResult = _userData.Notifications.Select(n => new NotificationModel()
             {
                 Id = n.Id,
                 UserId = n.UserId,
@@ -54,15 +54,15 @@ namespace StudentSatisfaction.Testing
             });
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<NotificationModel>>(_user.Notifications))
+                .Setup(m => m.Map<IEnumerable<NotificationModel>>(_userData.Notifications))
                 .Returns(expectedResult);
 
             //Act
-            var result = await _sut.GetAll(_user.Id);
+            var result = await _sut.GetAll(_userData.Id);
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
@@ -73,7 +73,7 @@ namespace StudentSatisfaction.Testing
         {
             //Arrange
             var notification = new Notification(Guid.NewGuid(), "notification message");
-            _user.Notifications.Add(notification);
+            _userData.Notifications.Add(notification);
 
             var expectedResult = new NotificationModel()
             {
@@ -83,15 +83,15 @@ namespace StudentSatisfaction.Testing
             };
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
                 .Setup(m => m.Map<NotificationModel>(It.Is<Notification>(n => n.Id == expectedResult.Id)))
                 .Returns(expectedResult);
 
             //Act
-            var result = await _sut.GetById(_user.Id, expectedResult.Id);
+            var result = await _sut.GetById(_userData.Id, expectedResult.Id);
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
@@ -116,18 +116,18 @@ namespace StudentSatisfaction.Testing
                 Message = notification.Message
             };
 
-            var notificationListSize = _user.Notifications.Count();
+            var notificationListSize = _userData.Notifications.Count();
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
                 .Setup(m => m.Map<Notification>(model))
                 .Returns(notification);
 
             _userRepositoryMock
-                .Setup(m => m.Update(_user));
+                .Setup(m => m.Update(_userData));
 
             _userRepositoryMock
                 .Setup(m => m.SaveChanges())
@@ -138,11 +138,11 @@ namespace StudentSatisfaction.Testing
                 .Returns(expectedResult);
 
             //Act
-            var result = await _sut.Add(_user.Id, model);
+            var result = await _sut.Add(_userData.Id, model);
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
-            _user.Notifications.Count().Should().Be(notificationListSize + 1);
+            _userData.Notifications.Count().Should().Be(notificationListSize + 1);
         }
 
         [Fact]
@@ -150,35 +150,35 @@ namespace StudentSatisfaction.Testing
         {
             //Arrange
             var notification = new Notification(Guid.NewGuid(), "notification message");
-            _user.Notifications.Add(notification);
+            _userData.Notifications.Add(notification);
 
-            var notificationListSize = _user.Notifications.Count();
+            var notificationListSize = _userData.Notifications.Count();
 
-
-            _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
 
             _userRepositoryMock
-                .Setup(m => m.Update(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
+
+            _userRepositoryMock
+                .Setup(m => m.Update(_userData));
 
             _userRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
 
             //Act
-            await _sut.Delete(_user.Id, notification.Id);
+            await _sut.Delete(_userData.Id, notification.Id);
 
             //Assert
-            _user.Notifications.Count().Should().Be(notificationListSize - 1);
+            _userData.Notifications.Count().Should().Be(notificationListSize - 1);
         }
 
         [Fact]
         public async void When_UpdateIsCalled_WithAnUserIdAndANotificationIdAndAnUpdateNotificationModel_Expect_ThatNotificationToBe_UpdatedFromTheUsersNotificatuionList()
         {
             //Arrange
-            var notification = new Notification(_user.Id, "notification to be updated");
-            _user.Notifications.Add(notification);
+            var notification = new Notification(_userData.Id, "notification to be updated");
+            _userData.Notifications.Add(notification);
 
             var model = new UpdateNotificationModel()
             {
@@ -187,22 +187,22 @@ namespace StudentSatisfaction.Testing
             };
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
                 .Setup(m => m.Map(model, notification))
                 .Returns(notification);
 
             _userRepositoryMock
-                .Setup(m => m.Update(_user));
+                .Setup(m => m.Update(_userData));
 
             _userRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
 
             //Act
-            await _sut.Update(_user.Id, notification.Id, model);
+            await _sut.Update(_userData.Id, notification.Id, model);
         }
     }
 }

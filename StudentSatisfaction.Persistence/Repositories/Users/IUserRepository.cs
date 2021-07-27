@@ -9,11 +9,12 @@ namespace StudentSatisfaction.Persistence.Repositories.Users
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAll();
-        Task<User> GetUserById(Guid id);
-        Task Create(User user);
-        void Update(User user);
-        void Delete(User user);
+        IEnumerable<UserData> GetAll();
+        Task<UserData> GetUserById(Guid id);
+        Task Create(UserData userData);
+        void Update(UserData userData);
+        void Delete(UserData userData);
+        Task DeleteCredentials(Guid userId);
         Task SaveChanges();
     }
 }

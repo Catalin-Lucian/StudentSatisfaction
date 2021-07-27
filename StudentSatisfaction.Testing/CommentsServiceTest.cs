@@ -28,7 +28,7 @@ namespace StudentSatisfaction.Testing
 
         private readonly ICommentsService _sut;
 
-        private readonly User _user;
+        private readonly UserData _userData;
         private readonly Survey _survey;
 
         public CommentsServiceTest()
@@ -44,7 +44,7 @@ namespace StudentSatisfaction.Testing
             _sut = new CommentsService(_surveyRepositoryMock.Object, _userRepositoryMock.Object,
                 _commentRepositoryMock.Object, _mapperMock.Object);
 
-            _user = new User("User", "Username", "password", "Random name", "something@gmail.com",
+            _userData = new UserData("UserData", "Username", "password", "Random name", "something@gmail.com",
                 new DateTime(1999, 1, 12, 9, 10, 0), "AC");
             _survey = new Survey("IP - lecture", DateTime.Now, DateTime.Now.AddMonths(3));
         }
@@ -112,7 +112,7 @@ namespace StudentSatisfaction.Testing
         public async void When_GetCommentsFromUser_IsCalled_WithAnUserId_ExpectAllItsCommentsToBeReturned()
         {
             //Arrange
-            var expectedResult = _user.Comments.Select(c => new CommentModel()
+            var expectedResult = _userData.Comments.Select(c => new CommentModel()
             {
                 SurveyId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
@@ -120,15 +120,15 @@ namespace StudentSatisfaction.Testing
             });
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
-                .Setup(m => m.Map<IEnumerable<CommentModel>>(_user.Comments))
+                .Setup(m => m.Map<IEnumerable<CommentModel>>(_userData.Comments))
                 .Returns(expectedResult);
 
             //Assert
-            var result = await _sut.GetCommentsFromUser(_user.Id);
+            var result = await _sut.GetCommentsFromUser(_userData.Id);
 
             //Act
             result.Should().BeEquivalentTo(expectedResult);
@@ -159,8 +159,8 @@ namespace StudentSatisfaction.Testing
                 .Returns(Task.FromResult(_survey));
 
             _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
 
             _mapperMock
                 .Setup(m => m.Map<Comment>(model))
@@ -181,7 +181,7 @@ namespace StudentSatisfaction.Testing
                 .Returns(Task.CompletedTask);
 
             _userRepositoryMock
-                .Setup(m => m.Update(_user));
+                .Setup(m => m.Update(_userData));
             _userRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
@@ -191,7 +191,7 @@ namespace StudentSatisfaction.Testing
                 .Returns(expectedResult);
 
             //Act
-            var result = await _sut.Add(_survey.Id, _user.Id, model);
+            var result = await _sut.Add(_survey.Id, _userData.Id, model);
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
@@ -206,7 +206,7 @@ namespace StudentSatisfaction.Testing
                 CommentText = "updated comment"
             };
 
-            var comment = new Comment(_user.Id, _survey.Id, "comment 1");
+            var comment = new Comment(_userData.Id, _survey.Id, "comment 1");
 
             _commentRepositoryMock
                 .Setup(m => m.GetCommentById(comment.Id))
@@ -254,25 +254,25 @@ namespace StudentSatisfaction.Testing
         {
             //Arrange
             var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "comment 1");
-            _user.Comments.Add(comment);
+            _userData.Comments.Add(comment);
 
-            var commentListSize = _user.Comments.Count();
-
-            _userRepositoryMock
-                .Setup(m => m.GetUserById(_user.Id))
-                .Returns(Task.FromResult(_user));
+            var commentListSize = _userData.Comments.Count();
 
             _userRepositoryMock
-                .Setup(m => m.Update(_user));
+                .Setup(m => m.GetUserById(_userData.Id))
+                .Returns(Task.FromResult(_userData));
+
+            _userRepositoryMock
+                .Setup(m => m.Update(_userData));
             _userRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
 
             //Act
-            await _sut.DeleteCommentFromUser(_user.Id, comment.Id);
+            await _sut.DeleteCommentFromUser(_userData.Id, comment.Id);
 
             //Assert
-            _user.Comments.Count().Should().Be(commentListSize - 1);
+            _userData.Comments.Count().Should().Be(commentListSize - 1);
         }
     }
 }

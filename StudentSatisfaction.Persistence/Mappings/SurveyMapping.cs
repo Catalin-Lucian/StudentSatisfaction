@@ -15,7 +15,7 @@ namespace StudentSatisfaction.Persistence.Mappings
         {
             modelBuilder.Entity<Survey>()
                 .Property(s => s.Id)
-                .HasColumnName("id")
+                .HasColumnName("Id")
                 .IsRequired();
 
             modelBuilder.Entity<Survey>()
@@ -35,7 +35,7 @@ namespace StudentSatisfaction.Persistence.Mappings
 
             //UserSurvey  ----> points!
             modelBuilder.Entity<Survey>()
-                .HasMany<User>(s => s.Users)
+                .HasMany<UserData>(s => s.Users)
                 .WithMany(s => s.Surveys)
                 .UsingEntity(j => j.ToTable("UserSurveys"));
 

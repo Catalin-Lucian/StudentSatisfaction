@@ -46,10 +46,10 @@ namespace StudentSatisfaction.Business.Surveys
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())); 
 
 
-            CreateMap<User, UserModel>();
-            CreateMap<UserModel, User>();
-            CreateMap<UpdateUserModel, User>();
-            CreateMap<CreateUserModel, User>()
+            CreateMap<UserData, UserModel>();
+            CreateMap<UserModel, UserData>();
+            CreateMap<UpdateUserModel, UserData>();
+            CreateMap<CreateUserModel, UserData>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
 

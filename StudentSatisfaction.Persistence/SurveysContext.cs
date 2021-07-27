@@ -37,7 +37,7 @@ namespace StudentSatisfaction.Persistence
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserData> UsersData { get; set; }
         public DbSet<Notification> Notifications { get; set; }
     }
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace StudentSatisfaction.Entities.Users
 {
-    public sealed class User: Entity
+    public sealed class UserData: Entity
     {
-        public User(string type, string username, string password, string name, string email, DateTime birthDate, string facultyName): base()
+        public UserData(string type, string username, string password, string name, string email, DateTime birthDate, string facultyName): base()
         {
             Type = type;
             Username = username;

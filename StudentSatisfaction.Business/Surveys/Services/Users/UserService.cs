@@ -29,7 +29,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         }
 
 
-        //Manage Users
+        //Manage UsersData
         public IEnumerable<UserModel> GetAllUsers()
         {
             return _mapper.Map<IEnumerable<UserModel>>(_userRepository.GetAll());
@@ -44,7 +44,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
 
         public async Task<UserModel> Create(CreateUserModel model)
         {
-            var user = _mapper.Map<User>(model);
+            var user = _mapper.Map<UserData>(model);
             await _userRepository.Create(user);
             await _userRepository.SaveChanges();
 
@@ -56,6 +56,12 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
             var user = await _userRepository.GetUserById(userId);
 
             _userRepository.Delete(user);
+            await _userRepository.SaveChanges();
+        }
+
+        public async Task DeleteCredentials(Guid userId)
+        {
+            await _userRepository.DeleteCredentials(userId);
             await _userRepository.SaveChanges();
         }
 
@@ -92,7 +98,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
             return notAnsweredSurveys;
         }
 
-        //Manage Users from Survey
+        //Manage UsersData from Survey
 
         public async Task<UserModel> GetUserFromSurvey(Guid surveyId, Guid userId)
         {
@@ -114,7 +120,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         {
             var survey = await _surveyRepository.GetSurveyById(surveyId);
 
-            var user = _mapper.Map<User>(model);
+            var user = _mapper.Map<UserData>(model);
             survey.Users.Add(user);
 
             _surveyRepository.Update(survey);
@@ -159,7 +165,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
 
         public async Task<UserModel> Create(UserModel model)
         {
-            var user = _mapper.Map<User>(model);
+            var user = _mapper.Map<UserData>(model);
             await _userRepository.Create(user);
             await _userRepository.SaveChanges();
 

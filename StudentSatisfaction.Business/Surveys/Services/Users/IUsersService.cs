@@ -11,12 +11,13 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
 {
     public interface IUsersService
     {
-        //manage Users table
+        //manage UsersData table
         IEnumerable<UserModel> GetAllUsers();
         Task<UserModel> GetUserById(Guid userId);
         Task<UserModel> Create(CreateUserModel model);
         Task<UserModel> Create(UserModel model);
         Task Delete(Guid userId);
+        Task DeleteCredentials(Guid userId);
         Task Update(Guid userId, UpdateUserModel model);
 
         //GetAllComents
@@ -26,7 +27,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         //GetAllNotifications
 
 
-        // manage Users that completed a Survey
+        // manage UsersData that completed a Survey
         Task<IEnumerable<UserModel>> GetAllUsersFromSurvey(Guid surveyId);
         //varianta asta e folosita in SurveyController
         Task<UserModel> AddUserToSurvey(Guid surveyId, Guid userId);
