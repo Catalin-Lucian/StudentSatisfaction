@@ -54,6 +54,7 @@ namespace StudentSatisfaction.API.Controllers
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("userId",user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -74,7 +75,6 @@ namespace StudentSatisfaction.API.Controllers
 
                 return Ok(new
                 {
-                    id = user.Id,
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
                 });
@@ -158,16 +158,6 @@ namespace StudentSatisfaction.API.Controllers
             await _usersService.Update(new Guid(user.Id), userUpdatedModel);
 
             return Ok(new { Status = "Success", Message = "User role successfully updated!" });
-        }
-
-        [HttpGet]
-        [Route("user")]
-        public async Task<IActionResult> GetUserDataByToken()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-            var user= await _usersService.GetUserById(new Guid(userId));
-            return Ok(user);
-
         }
     }
 }
