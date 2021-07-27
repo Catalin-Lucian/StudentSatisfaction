@@ -15,14 +15,12 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
 {
     public sealed class RatingService : IRatingService
     {
-        private readonly IRatingRepository _ratingRepository;
         private readonly IUserRepository _userRepository;
         private readonly IQuestionRepository _questionRepository;
         private readonly IMapper _mapper;
 
-        public RatingService(IRatingRepository ratingRepository, IUserRepository userRepository, IQuestionRepository questionRepository, IMapper mapper)
+        public RatingService(IUserRepository userRepository, IQuestionRepository questionRepository, IMapper mapper)
         {
-            _ratingRepository = ratingRepository;
             _userRepository = userRepository;
             _questionRepository = questionRepository;
             _mapper = mapper;

@@ -198,7 +198,7 @@ namespace StudentSatisfaction.Testing
                 Type = "plain text"
             };
 
-            var expectedResult = question;
+            var expectedResult = new Question(Guid.NewGuid(), model.Type, model.QuestionText);
 
             _surveyRepositoryMock
                 .Setup(m => m.GetSurveyById(_survey.Id))

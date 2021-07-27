@@ -13,6 +13,7 @@ namespace StudentSatisfaction.Entities.Surveys
             SurveyId = surveyId;
             Type = type;
             QuestionText = questionText;
+            Ratings = new List<Rating>();
         }
 
         public Guid SurveyId { get; private set; }
