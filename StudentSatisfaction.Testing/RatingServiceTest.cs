@@ -180,7 +180,6 @@ namespace StudentSatisfaction.Testing
                 Points = 3
             };
 
-            //var expectedResult = ratingToBeUpdated;
             var expectedResult = new Rating(model.QuestionId, model.UserId, model.Points, model.Answear);
 
             _questionRepositoryMock
