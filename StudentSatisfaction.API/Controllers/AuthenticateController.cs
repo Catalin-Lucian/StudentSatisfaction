@@ -106,7 +106,7 @@ namespace StudentSatisfaction.API.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            //adaugare rol de "UserData" pt. noul user creat
+            //adaugare rol de "User" pt. noul user creat (in caz de nu exista )
             var createdUser = await userManager.FindByNameAsync(model.Username);
             await userManager.AddToRoleAsync(user, "User");
 

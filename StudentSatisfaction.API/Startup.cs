@@ -194,6 +194,37 @@ namespace StudentSatisfaction.API
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();
             dbContext.Database.EnsureCreated();
+
+
+            //Checks if role "User" exists if not creates it
+            var userRole= dbContext.Roles.FirstOrDefault(r => r.Name == "User");
+            if(userRole==null)
+            {
+                var roleToAdd = new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                };
+
+                dbContext.Roles.Add(roleToAdd);
+                dbContext.SaveChanges();
+
+            }
+
+            //Checks if role "Admin" exists if not creates it
+            var adminRole = dbContext.Roles.FirstOrDefault(r => r.Name == "Admin");
+            if (adminRole == null)
+            {
+                var roleToAdd = new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                };
+
+                dbContext.Roles.Add(roleToAdd);
+                dbContext.SaveChanges();
+
+            }
         }
     }
 }
