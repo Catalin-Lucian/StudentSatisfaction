@@ -207,14 +207,15 @@ namespace StudentSatisfaction.Testing
             };
 
             var comment = new Comment(_userData.Id, _survey.Id, "comment 1");
+            var expectedResult = new Comment(Guid.NewGuid(), Guid.NewGuid(), comment.CommentText);
 
             _commentRepositoryMock
                 .Setup(m => m.GetCommentById(comment.Id))
-                .Returns(Task.FromResult(comment));
+                .ReturnsAsync(comment);
 
             _mapperMock
                 .Setup(m => m.Map(model, comment))
-                .Returns(comment);
+                .Returns(expectedResult);
 
             _commentRepositoryMock
                 .Setup(m => m.Update(comment));
