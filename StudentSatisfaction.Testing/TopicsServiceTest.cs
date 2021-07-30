@@ -48,7 +48,7 @@ namespace StudentSatisfaction.Testing
         }
 
         [Fact]
-        public async void When_GetAllIsCalled_Expect_AllTopicsToBeReturned()
+        public void When_GetAllIsCalled_Expect_AllTopicsToBeReturned()
         {
             //Arrange
             var topicModels = new List<TopicModel>();

@@ -30,6 +30,7 @@ namespace StudentSatisfaction.Testing
 
         private readonly UserData _userData;
         private readonly Survey _survey;
+        private readonly Comment _comment;
 
         public CommentsServiceTest()
         {
@@ -47,6 +48,7 @@ namespace StudentSatisfaction.Testing
             _userData = new UserData("UserData", "Username", "password", "Random name", "something@gmail.com",
                 new DateTime(1999, 1, 12, 9, 10, 0), "AC");
             _survey = new Survey("IP - lecture", DateTime.Now, DateTime.Now.AddMonths(3));
+            _comment = new Comment(_userData.Id, _survey.Id, "comment 1");
         }
 
         public void Dispose()
@@ -206,22 +208,22 @@ namespace StudentSatisfaction.Testing
                 CommentText = "updated comment"
             };
 
-            var comment = new Comment(_userData.Id, _survey.Id, "comment 1");
-            var expectedResult = new Comment(Guid.NewGuid(), Guid.NewGuid(), comment.CommentText);
-
             _commentRepositoryMock
-                .Setup(m => m.GetCommentById(comment.Id))
-                .ReturnsAsync(comment);
+                .Setup(m => m.GetCommentById(_comment.Id))
+                .ReturnsAsync(_comment);
 
             _mapperMock
-                .Setup(m => m.Map(model, comment))
-                .Returns(expectedResult);
+                .Setup(m => m.Map(model, _comment))
+                .Returns(_comment);
 
             _commentRepositoryMock
-                .Setup(m => m.Update(comment));
+                .Setup(m => m.Update(_comment));
             _commentRepositoryMock
                 .Setup(m => m.SaveChanges())
                 .Returns(Task.CompletedTask);
+
+            //Act
+            _sut.Update(_comment.Id, model);
         }
 
         [Fact]
