@@ -24,7 +24,7 @@ namespace StudentSatisfaction.API.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SurveysContext _context;
         private readonly IConfiguration _configuration;
         private readonly IUsersService _usersService;
@@ -34,7 +34,7 @@ namespace StudentSatisfaction.API.Controllers
                    IConfiguration configuration, IUsersService usersService
 )
         {
-            this.userManager = userManager;
+            this._userManager = userManager;
             _context = context;
             _configuration = configuration;
             _usersService = usersService;
@@ -44,12 +44,12 @@ namespace StudentSatisfaction.API.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            //var user = await userManager.FindByNameAsync(model.Username);
-            var user = await userManager.FindByEmailAsync(model.Email);
+            //var user = await _userManager.FindByNameAsync(model.Username);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await userManager.GetRolesAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
@@ -86,12 +86,12 @@ namespace StudentSatisfaction.API.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username);
+            var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Username already exists!" });
 
             ////////
-            userExists = await userManager.FindByEmailAsync(model.Email);
+            userExists = await _userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Email already exists!" });
             ////////
@@ -102,13 +102,13 @@ namespace StudentSatisfaction.API.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
             //adaugare rol de "UserData" pt. noul user creat
-            var createdUser = await userManager.FindByNameAsync(model.Username);
-            await userManager.AddToRoleAsync(user, "User");
+            var createdUser = await _userManager.FindByNameAsync(model.Username);
+            await _userManager.AddToRoleAsync(user, "User");
 
             //Adaug noul UserData creat la Register si in tabela UsersData
             var newUser = new UserModel()
@@ -133,14 +133,14 @@ namespace StudentSatisfaction.API.Controllers
         [Route("assignRole")]
         public async Task<IActionResult> AssignRole(string username, string roleId)
         {
-            var user = await userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User not found!" });
 
             string roleName = _context.Roles.First(r => r.Id.Equals(roleId)).Name;
 
-            await userManager.AddToRoleAsync(user, roleName);
+            await _userManager.AddToRoleAsync(user, roleName);
 
 
             //odata asignat un rol pt. un utilizator, se face update si la campul type din tabela UsersData
