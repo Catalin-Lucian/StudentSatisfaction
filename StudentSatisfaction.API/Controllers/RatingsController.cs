@@ -22,7 +22,7 @@ namespace StudentSatisfaction.API.Controllers
             _ratingService = ratingService;
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("users/{userId}")]
         public async Task<IActionResult> GetAllRatingsFromUser([FromRoute] Guid userId)
         {
@@ -31,7 +31,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(ratings);
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{questionId}")]
         public async Task<IActionResult> GetAllRatingsFromQuestion([FromRoute] Guid questionId)
         {
@@ -53,7 +53,7 @@ namespace StudentSatisfaction.API.Controllers
             return Created(rating.Id.ToString(), null);
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("{questionId}/{ratingId}")]
         public async Task<IActionResult> Put([FromRoute] Guid questionId, [FromRoute] Guid ratingId, [FromBody] UpdateRatingModel model)
         {
@@ -63,7 +63,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("{questionId}/{ratingId}")]
         public async Task<IActionResult> Delete([FromRoute]Guid questionId, [FromRoute] Guid ratingId)
         {

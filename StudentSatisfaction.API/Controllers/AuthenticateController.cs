@@ -54,6 +54,7 @@ namespace StudentSatisfaction.API.Controllers
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("userId",user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -74,7 +75,6 @@ namespace StudentSatisfaction.API.Controllers
 
                 return Ok(new
                 {
-                    id = user.Id,
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
                 });
@@ -128,9 +128,10 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("assignRole")]
-        public async Task<IActionResult> MakeAdmin(string username, string roleId)
+        public async Task<IActionResult> AssignRole(string username, string roleId)
         {
             var user = await userManager.FindByNameAsync(username);
 

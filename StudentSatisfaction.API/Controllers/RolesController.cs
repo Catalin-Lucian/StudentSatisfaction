@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,12 +21,14 @@ namespace StudentSatisfaction.API.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IEnumerable<IdentityRole> Get()
         {
             return _context.Roles.AsEnumerable();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public void Post([FromBody] string roleName)
         {
@@ -40,6 +43,7 @@ namespace StudentSatisfaction.API.Controllers
             _context.SaveChanges();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
