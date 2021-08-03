@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StudentSatisfaction.Business.Surveys.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +17,21 @@ namespace StudentSatisfaction.API.Controllers
     public class RatingsController : ControllerBase
     {
         private readonly IRatingService _ratingService;
+        private readonly ISurveyService _surveygService;
 
-        public RatingsController(IRatingService ratingService)
+        public RatingsController(IRatingService ratingService, ISurveyService surveygService)
         {
             _ratingService = ratingService;
+            _surveygService = surveygService;
+        }
+
+
+        [HttpGet("questions/{questionId}/{ratingId}")]
+        public async Task<IActionResult> GetRatingFromQuestion([FromRoute] Guid questionId, [FromRoute] Guid ratingId)
+        {
+            var rating = await _ratingService.GetRating(questionId, ratingId);
+
+            return Ok(rating);
         }
 
         [Authorize(Roles = "Admin, User")]
@@ -70,6 +82,22 @@ namespace StudentSatisfaction.API.Controllers
             await _ratingService.Delete(questionId, ratingId);
 
             return NoContent();
+        }
+
+        [HttpGet("surveys/{surveyId}")]
+        public IActionResult GetAllRatingsFromSurvey([FromRoute] Guid surveyId)
+        {
+            var ratings = _ratingService.GetAllFromSurvey(surveyId);
+
+            return Ok(ratings);
+        }
+
+        [HttpGet("surveys/{surveyId}/users/{userId}")]
+        public IActionResult GetAllRatingsFromSurveyFromCertainUser([FromRoute] Guid surveyId, [FromRoute] Guid userId)
+        {
+            var ratings = _ratingService.GetUserRatingFromSurvey(surveyId, userId);
+
+            return Ok(ratings);
         }
     }
 }

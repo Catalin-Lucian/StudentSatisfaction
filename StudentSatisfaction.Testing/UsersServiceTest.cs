@@ -502,7 +502,7 @@ namespace StudentSatisfaction.Testing
         }
 
         [Fact]
-        public async void When_CreateIsCalled_WithAnUserModel_ExpectThatUserToBeCreated()
+        public void When_CreateIsCalled_WithAnUserModel_ExpectThatUserToBeCreated()
         {
             var model = new CreateUserModel()
             {

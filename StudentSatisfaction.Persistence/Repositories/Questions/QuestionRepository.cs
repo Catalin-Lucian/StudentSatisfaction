@@ -29,7 +29,8 @@ namespace StudentSatisfaction.Persistence.Repositories.Questions
 
         public IEnumerable<Question> GetAll()
         {
-            return _context.Questions;
+            return  _context.Questions
+                .Include(x => x.Ratings);
         }
 
         public async Task<Question> GetById(Guid id)

@@ -41,9 +41,35 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
             return _mapper.Map<IEnumerable<RatingModel>>(ratings);
         }
 
-        public Task<RatingModel> GetRating(Guid questionId, Guid ratingId)
+        public IEnumerable<RatingModel> GetAllFromSurvey(Guid surveyId)
         {
-            throw new NotImplementedException();
+            var questions = _questionRepository.GetAll().Where(q => q.SurveyId == surveyId);
+            var ratings = new List<Rating>();
+
+            foreach (var question in questions)
+            {
+                ratings.AddRange(question.Ratings);
+            }
+
+            return _mapper.Map<IEnumerable<RatingModel>>(ratings);
+        }
+
+        public async Task<RatingModel> GetRating(Guid questionId, Guid ratingId)
+        {
+            var question = await _questionRepository.GetById(questionId);
+            var rating = question.Ratings.FirstOrDefault(r => r.Id == ratingId);
+
+            return _mapper.Map<RatingModel>(rating);
+        }
+
+        public IEnumerable<RatingModel> GetUserRatingFromSurvey(Guid surveyId, Guid userId)
+        {
+            var ratingsFromSurvey = this.GetAllFromSurvey(surveyId);
+            var ratings = new List<RatingModel>();
+
+            ratings.AddRange(ratingsFromSurvey.Where(r => r.UserId == userId));
+
+            return ratings;
         }
 
         public async Task Update(Guid questionId, Guid ratingId, UpdateRatingModel model)
@@ -62,10 +88,6 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
             var user = await _userRepository.GetUserById(userId);
 
             var rating = _mapper.Map<Rating>(model);
-
-            //await _ratingRepository.Create(rating);
-            //_ratingRepository.Update(rating);
-            //await _ratingRepository.SaveChanges();
 
 
             user.Ratings.Add(rating);
