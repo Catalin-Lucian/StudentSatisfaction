@@ -564,6 +564,7 @@ namespace StudentSatisfaction.Testing
 
             var ratings = _user.Ratings;
 
+
             var answeredQuestions = new List<Question>();
             var expectedResult = new List<QuestionModel>();
 
