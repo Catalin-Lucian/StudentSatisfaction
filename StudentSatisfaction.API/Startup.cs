@@ -33,6 +33,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using StudentSatisfaction.Business.Surveys.Models;
+using StudentSatisfaction.Business.Surveys.Models.Ratings;
+using StudentSatisfaction.Business.Surveys.Models.Users;
+using StudentSatisfaction.Business.Validators;
 
 namespace StudentSatisfaction.API
 {
@@ -145,6 +151,16 @@ namespace StudentSatisfaction.API
                 .AddScoped<ISubmittedQuestionsService, SubmittedQuestionService>()
                 .AddScoped<IRatingService, RatingService>()
                 .AddScoped<INotificationsService, NotificationsService>();
+
+            services.AddScoped<IValidator<CreateRatingModel>, CreateRatingModelValidator>();
+            services.AddScoped<IValidator<UpdateRatingModel>, UpdateRatingModelValidator>();
+            services.AddScoped<IValidator<CreateUserModel>, CreateUserValidator>();
+            services.AddScoped<IValidator<UpdateUserModel>, UpdateUserModelValidator>();
+
+
+            services
+                .AddMvc()
+                .AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
