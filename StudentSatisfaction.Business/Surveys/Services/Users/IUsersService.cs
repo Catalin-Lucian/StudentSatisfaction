@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StudentSatisfaction.Business.Surveys.Models.Questions;
 
 namespace StudentSatisfaction.Business.Surveys.Services.Users
 {
@@ -20,14 +21,8 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
         Task DeleteCredentials(Guid userId);
         Task Update(Guid userId, UpdateUserModel model);
 
-        //GetAllComents
-        //GetAllRatings
-        //GetAllSubmittedQuestions
-        //GetAllCompletedSurveys
-        //GetAllNotifications
 
-
-        // manage UsersData that completed a Survey
+        // manage Users that completed a Survey
         Task<IEnumerable<UserModel>> GetAllUsersFromSurvey(Guid surveyId);
         //varianta asta e folosita in SurveyController
         Task<UserModel> AddUserToSurvey(Guid surveyId, Guid userId);
@@ -38,5 +33,8 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
 
         Task<IEnumerable<SurveyModel>> GetAnsweredSurveys(Guid userId);
         Task<IEnumerable<SurveyModel>> GetNotAnsweredSurveys(Guid userId);
+
+
+        Task<IEnumerable<QuestionModel>> GetAnsweredQuestions(Guid userId);
     }
 }

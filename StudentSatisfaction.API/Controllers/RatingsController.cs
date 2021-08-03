@@ -17,22 +17,12 @@ namespace StudentSatisfaction.API.Controllers
     public class RatingsController : ControllerBase
     {
         private readonly IRatingService _ratingService;
-        private readonly ISurveyService _surveygService;
 
-        public RatingsController(IRatingService ratingService, ISurveyService surveygService)
+        public RatingsController(IRatingService ratingService)
         {
             _ratingService = ratingService;
-            _surveygService = surveygService;
         }
 
-
-        [HttpGet("questions/{questionId}/{ratingId}")]
-        public async Task<IActionResult> GetRatingFromQuestion([FromRoute] Guid questionId, [FromRoute] Guid ratingId)
-        {
-            var rating = await _ratingService.GetRating(questionId, ratingId);
-
-            return Ok(rating);
-        }
 
         [Authorize(Roles = "Admin, User")]
         [HttpGet("users/{userId}")]
@@ -44,6 +34,25 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         [Authorize(Roles = "Admin, User")]
+        [HttpGet("question/{questionId}/users/{userId}")]
+        public async Task<IActionResult> GetQuestionRatingFromUser([FromRoute] Guid userId, [FromRoute] Guid questionId)
+        {
+            var ratings = await _ratingService.GetQuestionRatingFromUser(userId, questionId);
+
+            return Ok(ratings);
+        }
+
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("questions/{questionId}/{ratingId}")]
+        public async Task<IActionResult> GetRatingFromQuestion([FromRoute] Guid questionId, [FromRoute] Guid ratingId)
+        {
+            var rating = await _ratingService.GetRating(questionId, ratingId);
+
+            return Ok(rating);
+        }
+
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("{questionId}")]
         public async Task<IActionResult> GetAllRatingsFromQuestion([FromRoute] Guid questionId)
         {
@@ -52,7 +61,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(ratings);
         }
 
-        [Authorize(Roles = "Admin, UserData")]
+        [Authorize(Roles = "Admin, User")]
         //????????????????????
         [HttpPost("{questionId}/{userId}")]
         public async Task<IActionResult> Post([FromRoute] Guid questionId, [FromRoute] Guid userId, [FromBody] CreateRatingModel model)
@@ -84,6 +93,7 @@ namespace StudentSatisfaction.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("surveys/{surveyId}")]
         public IActionResult GetAllRatingsFromSurvey([FromRoute] Guid surveyId)
         {
@@ -92,6 +102,7 @@ namespace StudentSatisfaction.API.Controllers
             return Ok(ratings);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("surveys/{surveyId}/users/{userId}")]
         public IActionResult GetAllRatingsFromSurveyFromCertainUser([FromRoute] Guid surveyId, [FromRoute] Guid userId)
         {

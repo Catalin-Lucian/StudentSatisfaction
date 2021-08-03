@@ -49,6 +49,16 @@ namespace StudentSatisfaction.Testing
         }
 
         [Fact]
+        public void When_GetAllFromQuestionIsCalled_WithAQuestionId_Expect_AllTheRatingsFromThatQuestionToBeReturned()
+        {
+            //Arrange
+            _questionRepositoryMock
+                .Setup(m => m.GetById(_question.Id))
+                .ReturnsAsync(_question);
+
+        }
+
+        [Fact]
         public async void When_GetAllFromUser_IsCalled_WithAnUserId_Expect_AllTheUsersNotificationsToBeReturned()
         {
             //Arrange

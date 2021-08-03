@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudentSatisfaction.Business.Surveys.Models.Notifications;
 using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services.Notifications;
+using StudentSatisfaction.Business.Surveys.Services.Questions;
 using StudentSatisfaction.Business.Surveys.Services.Users;
 using StudentSatisfaction.Entities.Users;
 using System;
@@ -19,12 +20,14 @@ namespace StudentSatisfaction.API.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly INotificationsService _notificationsService;
+        private readonly IQuestionService _questionService;
 
 
-        public UsersController(IUsersService usersService, INotificationsService notificationsService)
+        public UsersController(IUsersService usersService, INotificationsService notificationsService, IQuestionService questionService)
         {
             _usersService = usersService;
             _notificationsService = notificationsService;
+            _questionService = questionService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -163,6 +166,22 @@ namespace StudentSatisfaction.API.Controllers
             }
 
             return Ok(surveys);
+        }
+
+
+        //Manage answered/not answered questions from a survey
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("{userId}/answeredQuestions")]
+        public async Task<IActionResult> GetAnsweredQuestions([FromRoute] Guid userId)
+        {
+            var answeredQuestions = await _usersService.GetAnsweredQuestions(userId);
+
+            if (answeredQuestions == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(answeredQuestions);
         }
     }
 }

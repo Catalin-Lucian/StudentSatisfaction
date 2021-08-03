@@ -33,6 +33,14 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
             return _mapper.Map<IEnumerable<RatingModel>>(user.Ratings);
         }
 
+        public async Task<RatingModel> GetQuestionRatingFromUser(Guid userId, Guid questionId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            var rating = user.Ratings.FirstOrDefault(r => r.QuestionId == questionId);
+
+            return _mapper.Map<RatingModel>(rating);
+        }
+
         public async Task<IEnumerable<RatingModel>> GetAllFromQuestion(Guid questionId)
         {
             var question = await _questionRepository.GetById(questionId);

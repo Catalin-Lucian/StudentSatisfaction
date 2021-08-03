@@ -10,6 +10,7 @@ namespace StudentSatisfaction.Business.Surveys.Services.Ratings
     public interface IRatingService
     {
         Task<RatingModel> GetRating(Guid questionId, Guid ratingId);
+        Task<RatingModel> GetQuestionRatingFromUser(Guid userId, Guid questionId);
         IEnumerable<RatingModel> GetUserRatingFromSurvey(Guid surveyId, Guid userId);
         Task<IEnumerable<RatingModel>> GetAllFromUser(Guid userId);
         IEnumerable<RatingModel> GetAllFromSurvey(Guid surveyId);

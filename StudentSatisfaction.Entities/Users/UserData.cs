@@ -39,6 +39,5 @@ namespace StudentSatisfaction.Entities.Users
         public ICollection<Comment> Comments { get; private set; }
         public ICollection<Notification> Notifications { get; private set; }
         public ICollection<Survey> Surveys { get; private set; }
-        //public ICollection<UserSurvey> UserSurveys { get; private set; }
     }
 }

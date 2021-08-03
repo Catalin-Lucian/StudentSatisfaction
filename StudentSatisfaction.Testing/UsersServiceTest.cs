@@ -12,6 +12,7 @@ using StudentSatisfaction.Business.Surveys.Services.Users;
 using StudentSatisfaction.Entities.Surveys;
 using StudentSatisfaction.Entities.Users;
 using StudentSatisfaction.Persistence;
+using StudentSatisfaction.Persistence.Repositories.Questions;
 using StudentSatisfaction.Persistence.Repositories.Users;
 using Xunit;
 
@@ -22,6 +23,7 @@ namespace StudentSatisfaction.Testing
         private readonly MockRepository _mockRepository;
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<ISurveyRepository> _surveyRepositoryMock;
+        private readonly Mock<IQuestionRepository> _questionRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
 
         private readonly IUsersService _sut;
@@ -39,10 +41,11 @@ namespace StudentSatisfaction.Testing
             _mockRepository = new MockRepository(MockBehavior.Strict);
             _surveyRepositoryMock = _mockRepository.Create<ISurveyRepository>();
             _userRepositoryMock = _mockRepository.Create<IUserRepository>();
+            _questionRepositoryMock = _mockRepository.Create<IQuestionRepository>();
 
             _mapperMock = _mockRepository.Create<IMapper>();
 
-            _sut = new UserService(_surveyRepositoryMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
+            _sut = new UserService(_surveyRepositoryMock.Object, _userRepositoryMock.Object, _questionRepositoryMock.Object, _mapperMock.Object);
             _user = new UserData("UserData", "Username", "password", "Random name", "something@gmail.com",
                 new DateTime(1999, 1, 12, 9, 10, 0), "AC");
             _survey = new Survey("IP - lecture", DateTime.Now, DateTime.Now.AddMonths(3));

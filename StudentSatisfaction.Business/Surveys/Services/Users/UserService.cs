@@ -12,6 +12,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using StudentSatisfaction.Business.Surveys.Models.Questions;
+using StudentSatisfaction.Persistence.Repositories.Questions;
 
 namespace StudentSatisfaction.Business.Surveys.Services.Users
 {
@@ -19,12 +21,14 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
     {
         private readonly ISurveyRepository _surveyRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IMapper _mapper;
 
-        public UserService(ISurveyRepository surveyRepository, IUserRepository userRepository, IMapper mapper)
+        public UserService(ISurveyRepository surveyRepository, IUserRepository userRepository, IQuestionRepository questionRepository, IMapper mapper)
         {
             _surveyRepository = surveyRepository;
             _userRepository = userRepository;
+            _questionRepository = questionRepository;
             _mapper = mapper;
         }
 
@@ -170,6 +174,23 @@ namespace StudentSatisfaction.Business.Surveys.Services.Users
             await _userRepository.SaveChanges();
 
             return _mapper.Map<UserModel>(user);
+        }
+
+
+        public async Task<IEnumerable<QuestionModel>> GetAnsweredQuestions(Guid userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            var ratings = user.Ratings;
+            var answeredQuestions = new List<Question>();
+
+            //add to the answeredQuestions list every question that has its Id in the Rating field, QuestionId
+            foreach (var rating in ratings)
+            {
+                var question = await _questionRepository.GetById(rating.QuestionId);
+                answeredQuestions.Add(question);
+            }
+
+            return _mapper.Map<IEnumerable<QuestionModel>>(answeredQuestions);
         }
     }
 }
