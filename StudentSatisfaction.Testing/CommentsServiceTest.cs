@@ -88,6 +88,12 @@ namespace StudentSatisfaction.Testing
         public async void When_GetCommentsFromSurvey_IsCalledWithASurveyId_ExpectAllCommentsFromThatSurvey_ToBeReturned()
         {
             //Arrange
+            var comment1 = new Comment(Guid.NewGuid(), Guid.NewGuid(), "some comment");
+            var comment2 = new Comment(Guid.NewGuid(), Guid.NewGuid(), "another comment");
+
+            _survey.Comments.Add(comment1);
+            _survey.Comments.Add(comment2);
+
             var expectedResult = _survey.Comments.Select(c => new CommentModel()
             {
                 SurveyId = Guid.NewGuid(),
@@ -114,6 +120,12 @@ namespace StudentSatisfaction.Testing
         public async void When_GetCommentsFromUser_IsCalled_WithAnUserId_ExpectAllItsCommentsToBeReturned()
         {
             //Arrange
+            var c1 = new Comment(Guid.NewGuid(), Guid.NewGuid(), "some comment1");
+            var c2 = new Comment(Guid.NewGuid(), Guid.NewGuid(), "another comment");
+
+            _userData.Comments.Add(c1);
+            _userData.Comments.Add(c2);
+
             var expectedResult = _userData.Comments.Select(c => new CommentModel()
             {
                 SurveyId = Guid.NewGuid(),
