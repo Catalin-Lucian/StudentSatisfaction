@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentAssertions;
 using Moq;
 using StudentSatisfaction.Business.Surveys.Models;
+using StudentSatisfaction.Business.Surveys.Models.Questions;
 using StudentSatisfaction.Business.Surveys.Models.Users;
 using StudentSatisfaction.Business.Surveys.Services.Users;
 using StudentSatisfaction.Entities.Surveys;
@@ -505,30 +506,90 @@ namespace StudentSatisfaction.Testing
         }
 
         [Fact]
-        public void When_CreateIsCalled_WithAnUserModel_ExpectThatUserToBeCreated()
+        public async void When_CreateIsCalled_WithAnUserModel_ExpectThatUserToBeCreated()
         {
-            var model = new CreateUserModel()
+            //Arrange
+            var model = new UserModel()
             {
-                BirthDate = new DateTime(1999, 1, 12, 9, 10, 0),
-                Email = "something@mail.com",
-                Name = "name",
+                Id = Guid.NewGuid(),
+                BirthDate = DateTime.Now,
+                Email = "email@yahoo.com",
                 FacultyName = "AC",
+                Name = "Name",
                 Password = "pass",
-                Type = "User",
+                Type = "user",
                 Username = "username"
             };
 
-            var expectedResult = new UserModel()
+            var user = new UserData(model.Type, model.Username, model.Password, model.FacultyName, model.Email,
+                model.BirthDate, model.FacultyName);
+
+            _mapperMock
+                .Setup(m => m.Map<UserData>(model))
+                .Returns(user);
+
+            _userRepositoryMock
+                .Setup(m => m.Create(user))
+                .Returns(Task.CompletedTask);
+
+
+            _userRepositoryMock
+                .Setup(m => m.SaveChanges())
+                .Returns(Task.CompletedTask);
+
+            _mapperMock
+                .Setup(m => m.Map<UserModel>(user))
+                .Returns(model);
+
+            //Act
+            var result = await _sut.Create(model);
+
+            //Assert
+            result.Should().BeEquivalentTo(model);
+        }
+
+        [Fact]
+        public async void When_GetAnsweredQuestions_IsCalledWithAnUserId_Expect_AllTheQuestionsAnsweredByThatUserToBeReturned()
+        {
+            //Arrange
+            var r1 = new Rating(Guid.NewGuid(), _user.Id, 5, "answer");
+            var r2 = new Rating(Guid.NewGuid(), _user.Id, 1, "answer2");
+            var question = new Question(Guid.NewGuid(), "plain text", "question text");
+
+            question.Ratings.Add(r1);
+            question.Ratings.Add(r2);
+
+            _user.Ratings.Add(r1);
+            _user.Ratings.Add(r2);
+
+            var ratings = _user.Ratings;
+
+            var answeredQuestions = new List<Question>();
+            var expectedResult = new List<QuestionModel>();
+
+            _userRepositoryMock
+                .Setup(m => m.GetUserById(_user.Id))
+                .ReturnsAsync(_user);
+
+            foreach (var rating in ratings)
             {
-                Id = Guid.NewGuid(),
-                BirthDate = model.BirthDate,
-                Email = model.Email,
-                Name = model.Name,
-                FacultyName = model.FacultyName,
-                Password = model.Password,
-                Type = model.Type,
-                Username = model.Username
-            };
+                _questionRepositoryMock
+                    .Setup(m => m.GetById(rating.QuestionId))
+                    .ReturnsAsync(question);
+
+                var q = await _questionRepositoryMock.Object.GetById(rating.QuestionId);
+                answeredQuestions.Add(q);
+            }
+
+            _mapperMock
+                .Setup(m => m.Map<IEnumerable<QuestionModel>>(answeredQuestions))
+                .Returns(expectedResult);
+
+            //Act
+            var result = await _sut.GetAnsweredQuestions(_user.Id);
+
+            //Assert
+            result.Should().BeEquivalentTo(expectedResult);
         }
     }
 }
