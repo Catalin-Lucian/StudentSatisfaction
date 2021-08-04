@@ -14,7 +14,7 @@ namespace StudentSatisfaction.Business.Validators
         {
             RuleFor(x => x.Points)
                 .InclusiveBetween(1, 5)
-                .WithMessage("Rating points must be in the following interval [0, 5]");
+                .WithMessage("Rating points must be in the following interval [1, 5]");
         }
     }
 }
