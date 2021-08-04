@@ -59,10 +59,6 @@ namespace StudentSatisfaction.API
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddDbContext<SurveysContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection")));
 
-            //services.AddDbContext<SurveysContext>(config =>
-            //{
-            //    config.UseSqlServer(Configuration.GetConnectionString("StudentSatisfactionConnection"));
-            //});
 
             // For Identity  
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -96,8 +92,6 @@ namespace StudentSatisfaction.API
             {
                 config.AddProfile<SurveyMappingProfile>();
             });
-            //services.AddControllers();
-            //services.AddSwaggerGen();
 
             services.AddSwaggerGen(swagger =>
             {
@@ -187,26 +181,6 @@ namespace StudentSatisfaction.API
             });
 
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseSwagger();
-            //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentSatisfaction.API v1"));
-            //}
-
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API - v1");
-            //});
-
-            //app.UseHttpsRedirection()
-            //   .UseRouting()
-            //   .UseAuthorization()
-            //   .UseEndpoints(endpoints =>
-            //   {
-            //        endpoints.MapControllers();
-            //   });
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<SurveysContext>();

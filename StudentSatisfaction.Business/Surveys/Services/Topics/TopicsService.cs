@@ -87,15 +87,11 @@ namespace StudentSatisfaction.Business.Surveys.Services.Topics
             var survey = await _surveyRepository.GetSurveyById(surveyId);
             var topic = await _topicRepository.GetTopicById(topicId);
 
-            //adaug topic-ul primit doar daca daca survey-ul
-            //nu contine deja topic-ul respectiv
-            if(!survey.Topics.Contains(topic))
-            {
-                survey.Topics.Add(topic);
+            //adaug topic-ul primit 
+            survey.Topics.Add(topic);
 
-                _surveyRepository.Update(survey);
-                await _surveyRepository.SaveChanges();
-            }
+            _surveyRepository.Update(survey);
+            await _surveyRepository.SaveChanges();
 
 
             return _mapper.Map<TopicModel>(topic);

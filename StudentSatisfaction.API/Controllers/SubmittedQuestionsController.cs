@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentSatisfaction.API.Controllers
 {
@@ -60,7 +59,6 @@ namespace StudentSatisfaction.API.Controllers
         }
 
         [Authorize(Roles = "Admin, User")]
-        //??????????
         [HttpPost("user/{userId}/survey/{surveyId}")]
         public async Task<IActionResult> Post([FromRoute] Guid surveyId, [FromRoute] Guid userId, [FromBody] CreateSubmittedQuestionModel model)
         {

@@ -99,9 +99,8 @@ namespace StudentSatisfaction.API.Controllers
         //functia AddTopicToSurvey e overloaded in TopicRepository --> adauga dupa id sau dupa model
         [Authorize(Roles = "Admin")]
         [HttpPost("{surveyId}/addTopic/{topicId}")]
-        public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId/*[FromBody] CreateTopicModel model*/)
+        public async Task<IActionResult> AddTopicToSurvey([FromRoute] Guid surveyId, [FromRoute] Guid topicId)
         {
-            //var topic = await _topicsService.AddTopicToSurvey(surveyId, model);
             var topic = await _topicsService.AddTopicToSurvey(surveyId, topicId);
 
             if (topic == null)

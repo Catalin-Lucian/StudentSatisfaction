@@ -9,9 +9,6 @@ namespace StudentSatisfaction.Business.Surveys.Models.Authentication
 {
     public class LoginModel
     {
-        //[Required(ErrorMessage = "UserData Name is required")]
-        //public string Username { get; set; }
-
         [Required(ErrorMessage = "UserData Email is required")]
         public string Email { get; set; }
 
