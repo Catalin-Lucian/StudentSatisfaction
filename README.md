@@ -1,4 +1,4 @@
 # StudentSatisfaction
 
 
-final breanck is #Auth_with_mail
+final breanck is #Auth_with_email
